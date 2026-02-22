@@ -30,16 +30,25 @@ _FRONTMATTER_RE = re.compile(r"^---\s*\n(.*?)\n---", re.DOTALL)
 _DESCRIPTION_RE = re.compile(r"""^description:\s*['"]?(.*?)['"]?\s*$""", re.MULTILINE)
 
 
+
 @dataclass(frozen=True)
 class FileEntry:
     """Represents a file with metadata extracted from frontmatter."""
     type: str
     path: str
     description: str
+    aproved: bool = False
+    stack: str = "all"
 
-    def to_dict(self) -> dict[str, str]:
+    def to_dict(self) -> dict:
         """Convert to dictionary for JSON serialization."""
-        return asdict(self)
+        return {
+            "type": self.type,
+            "path": self.path,
+            "description": self.description,
+            "aproved": self.aproved,
+            "stack": self.stack
+        }
 
 
 @dataclass(frozen=True)
@@ -213,14 +222,14 @@ def create_file_entry(file_path: Path, repo_root: Path, dir_type: str) -> FileEn
     if not normalized_path:
         return None
 
-    # For directories (skills, plugins), don't extract description
-    # For files, extract description from frontmatter
     description = "" if file_path.is_dir() else extract_description(file_path)
 
     return FileEntry(
         type=dir_type,
         path=normalized_path,
-        description=description
+        description=description,
+        aproved=False,
+        stack="all"
     )
 
 
@@ -330,16 +339,23 @@ def calculate_stats(files: FileList) -> ScanStats:
     )
 
 
-def files_to_dict(files: FileList) -> dict[str, list[dict[str, str]]]:
+def files_to_dict(files: FileList) -> dict:
     """Convert file list to dictionary for JSON serialization (pure function).
 
     Args:
         files: List of FileEntry objects
 
     Returns:
-        Dictionary with 'files' key containing list of file dictionaries
+        Dictionary with a list for each file type (agents, skills, prompts, instructions, plugins, hooks, etc.)
     """
-    return {"files": [f.to_dict() for f in files]}
+    result = {}
+    for f in files:
+        # Map type to top-level key
+        key = f.type
+        if key not in result:
+            result[key] = []
+        result[key].append(f.to_dict())
+    return result
 
 
 # ============================================================================

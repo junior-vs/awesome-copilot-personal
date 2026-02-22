@@ -1,6 +1,7 @@
 ---
 name: add-educational-comments
 description: 'Add educational comments to the file specified, or prompt asking for file to comment if one is not provided.'
+tools: ['edit/editFiles', 'web/fetch', 'todo']
 ---
 
 # Add Educational Comments

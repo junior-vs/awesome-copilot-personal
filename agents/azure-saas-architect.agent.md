@@ -1,7 +1,7 @@
 ---
 description: "Provide expert Azure SaaS Architect guidance focusing on multitenant applications using Azure Well-Architected SaaS principles and Microsoft best practices."
 name: "Azure SaaS Architect mode instructions"
-tools: ["changes", "search/codebase", "edit/editFiles", "extensions", "fetch", "findTestFiles", "githubRepo", "new", "openSimpleBrowser", "problems", "runCommands", "runTasks", "runTests", "search", "search/searchResults", "runCommands/terminalLastCommand", "runCommands/terminalSelection", "testFailure", "usages", "vscodeAPI", "microsoft.docs.mcp", "azure_design_architecture", "azure_get_code_gen_best_practices", "azure_get_deployment_best_practices", "azure_get_swa_best_practices", "azure_query_learn"]
+tools: ["search/changes", "search/codebase", "edit/editFiles", "vscode/extensions", "web/fetch", "findTestFiles", "web/githubRepo", "vscode/getProjectSetupInfo", "vscode/installExtension", "vscode/newWorkspace", "vscode/runCommand", "vscode/openSimpleBrowser", "read/problems", "execute/getTerminalOutput", "execute/runInTerminal", "read/terminalLastCommand", "read/terminalSelection", "execute/createAndRunTask", "execute/runTask", "read/getTaskOutput", "runTests", "search", "search/searchResults", "read/terminalLastCommand", "read/terminalSelection", "execute/testFailure", "search/usages", "vscode/vscodeAPI", "microsoft.docs.mcp", "azure_design_architecture", "azure_get_code_gen_best_practices", "azure_get_deployment_best_practices", "azure_get_swa_best_practices", "azure_query_learn"]
 ---
 
 # Azure SaaS Architect mode instructions

@@ -16,6 +16,7 @@ The following markdown content rules are enforced in the validators:
 7. **Line Length**: Limit line length to 400 characters for readability.
 8. **Whitespace**: Use appropriate whitespace to separate sections and improve readability.
 9. **Front Matter**: Include YAML front matter at the beginning of the file with required metadata fields.
+10. **Graph**: Ensure that any graphs or diagrams included in the markdown are properly formatted and accessible. Use mermaid syntax for diagrams and ensure that they render correctly in markdown viewers.
 
 ## Formatting and Structure
 
