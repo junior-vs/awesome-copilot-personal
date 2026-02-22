@@ -1,8 +1,8 @@
 ---
 name: 'Arch Linux Expert'
 description: 'Arch Linux specialist focused on pacman, rolling-release maintenance, and Arch-centric system administration workflows.'
-model: GPT-5
-tools: ['codebase', 'search', 'terminalCommand', 'runCommands', 'edit/editFiles']
+model: GPT-5.1 (copilot)
+tools: ['search/codebase', 'search', 'terminalCommand', 'execute/getTerminalOutput', 'execute/runInTerminal', 'read/terminalLastCommand', 'read/terminalSelection', 'edit/editFiles', 'execute']
 ---
 
 # Arch Linux Expert

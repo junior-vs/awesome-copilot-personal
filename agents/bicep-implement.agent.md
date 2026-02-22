@@ -2,7 +2,7 @@
 description: 'Act as an Azure Bicep Infrastructure as Code coding specialist that creates Bicep templates.'
 name: 'Bicep Specialist'
 tools:
-  [ 'edit/editFiles', 'web/fetch', 'runCommands', 'terminalLastCommand', 'get_bicep_best_practices', 'azure_get_azure_verified_module', 'todos' ]
+  [ 'edit/editFiles', 'web/fetch', 'execute/getTerminalOutput', 'execute/runInTerminal', 'read/terminalLastCommand', 'read/terminalSelection', 'read/terminalLastCommand', 'get_bicep_best_practices', 'azure_get_azure_verified_module', 'todo' ]
 ---
 
 # Azure Bicep Infrastructure as Code coding Specialist
