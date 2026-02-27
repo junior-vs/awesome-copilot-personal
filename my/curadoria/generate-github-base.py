@@ -6,17 +6,33 @@ from __future__ import annotations
 import argparse
 import json
 import os
-import shutil
 from pathlib import Path
+import shutil
 from typing import Iterable, List
 
+from dotenv import load_dotenv
 
-# Configuration: Repository root directory
-# Default: one level above the script's directory (parent of 'curadoria/')
-# Script location: <repo_root>/curadoria/generate-github-base.py
-# REPO_ROOT = <repo_root>/ (one level above)
-# You can override this by setting the REPO_ROOT environment variable
-REPO_ROOT = Path(os.getenv("REPO_ROOT", Path(__file__).resolve().parent.parent))
+# Load environment variables from .env file
+load_dotenv()
+
+
+def _get_repo_root() -> Path:
+    """Get repository root path with fallback hierarchy.
+
+    Precedence:
+    1. REPO_ROOT environment variable
+    2. REPO_ROOT from .env file (loaded above)
+    3. Script's parent directory (one level above curadoria/)
+
+    Returns:
+        Path to repository root
+    """
+    if repo_root_env := os.getenv("REPO_ROOT"):
+        return Path(repo_root_env).resolve()
+    return Path(__file__).resolve().parent.parent
+
+
+REPO_ROOT = _get_repo_root()
 
 
 def _extract_paths(data: object) -> List[str]:
@@ -43,7 +59,37 @@ def _extract_paths(data: object) -> List[str]:
     return []
 
 
-def _copy_paths(repo_root: Path, dest_root: Path, paths: Iterable[str]) -> List[Path]:
+def copy_files(source_dir, dest_dir, file_list):
+    """Copy files from source to destination directory."""
+    dest_path = Path(dest_dir)
+    dest_path.mkdir(parents=True, exist_ok=True)
+
+    skipped = 0
+    copied = 0
+
+    for file_entry in file_list:
+        source_file = source_dir / file_entry
+        dest_file = dest_path / file_entry
+
+        try:
+            if not source_file.exists():
+                print(f"⚠️  Warning: File not found: {source_file}")
+                skipped += 1
+                continue
+
+            dest_file.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(source_file, dest_file)
+            copied += 1
+        except (FileNotFoundError, IOError) as e:
+            print(f"⚠️  Warning: Could not copy {source_file}: {e}")
+            skipped += 1
+            continue
+
+    print(f"\n✅ Copy completed: {copied} files copied, {skipped} files skipped")
+    return copied, skipped
+
+
+def _copy_paths(repo_root: Path, dest_root: Path, paths: Iterable[str]) -> tuple[List[Path], int]:
     """Copy files from repo_root to dest_root, preserving relative paths.
 
     Args:
@@ -52,12 +98,10 @@ def _copy_paths(repo_root: Path, dest_root: Path, paths: Iterable[str]) -> List[
         paths: Iterable of relative file paths to copy
 
     Returns:
-        List of copied destination file paths
-
-    Raises:
-        FileNotFoundError: If a source file doesn't exist
+        Tuple of (list of copied destination file paths, count of skipped files)
     """
     copied: List[Path] = []
+    skipped = 0
 
     # Resolve destination: if relative, make it relative to repo_root; if absolute, use as-is
     if dest_root.is_absolute():
@@ -68,15 +112,23 @@ def _copy_paths(repo_root: Path, dest_root: Path, paths: Iterable[str]) -> List[
     for rel_path in paths:
         rel = Path(rel_path)
         src = repo_root / rel
-        if not src.exists():
-            raise FileNotFoundError(f"Source not found: {src}")
 
-        dest = final_dest / rel
-        dest.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(src, dest)
-        copied.append(dest)
+        try:
+            if not src.exists():
+                print(f"⚠️  Warning: File not found: {src}")
+                skipped += 1
+                continue
 
-    return copied
+            dest = final_dest / rel
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(src, dest)
+            copied.append(dest)
+        except (FileNotFoundError, IOError) as e:
+            print(f"⚠️  Warning: Could not copy {src}: {e}")
+            skipped += 1
+            continue
+
+    return copied, skipped
 
 
 def main() -> int:
@@ -116,14 +168,41 @@ def main() -> int:
     parser.add_argument(
         "--source",
         required=True,
-        help="Stack identifier (e.g., 'java', 'python') to load stack-<source>.json",
+        help="Source type (e.g., java, python) to load stack-<source>.json",
     )
     parser.add_argument(
         "--dest",
-        default="github-base",
-        help="Destination folder (relative to repo root or absolute path). Created if it doesn't exist.",
+        default=None,
+        help="Destination directory for generated files. Default: DEST_DIR env var or 'github-base'.",
+    )
+    parser.add_argument(
+        "--repo-root",
+        default=None,
+        help="Repository root directory. Default: REPO_ROOT env var or one level above script.",
+    )
+    parser.add_argument(
+        "--stack-dir",
+        default=None,
+        help="Stack files directory. Default: STACK_DIR env var or script directory.",
     )
     args = parser.parse_args()
+
+    # Set default destination from .env if not provided via command line
+    if args.dest is None:
+        args.dest = os.getenv("DEST_DIR", f"agents/{args.source}")
+
+    dest_path = Path(args.dest)
+
+    # Resolve paths with precedence: CLI args > env vars > defaults
+    if args.repo_root:
+        repo_root = Path(args.repo_root).resolve()
+    else:
+        repo_root = REPO_ROOT
+
+    if args.stack_dir:
+        stack_dir = Path(args.stack_dir).resolve()
+    else:
+        stack_dir = Path(__file__).resolve().parent
 
     print(f"Using repository root: {repo_root}")
     print(f"Script directory: {script_dir}\n")
@@ -156,9 +235,9 @@ def main() -> int:
     print(f"Destination: {final_dest}\n")
 
     try:
-        copied = _copy_paths(repo_root, dest_path, paths)
+        copied, skipped = _copy_paths(repo_root, dest_path, paths)
 
-        print(f"\nSuccessfully copied {len(copied)} files:")
+        print(f"\n✅ Copy completed: {len(copied)} files copied, {skipped} files skipped")
 
         # Try to show relative paths intelligently
         for item in copied:
@@ -175,7 +254,7 @@ def main() -> int:
                     # Fallback: show absolute path
                     print(f"  {item}")
 
-    except FileNotFoundError as e:
+    except Exception as e:
         print(f"Error: {e}")
         return 1
 
