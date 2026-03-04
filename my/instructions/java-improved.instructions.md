@@ -5,17 +5,26 @@ tools: ['search/codebase', 'edit/editFiles', 'search', 'web/fetch', 'execute/get
 name: 'Java Development Guidelines (JDK 21 LTS)'
 ---
 
-Guidelines for writing clean, maintainable, and modern Java code targeting **JDK 21 (LTS)**.
+Guidelines for writing clean, maintainable, and modern Java code targeting **JDK 21 (LTS)** by default.
 These rules apply to all `.java` source files and are grounded in:
 
 - *Effective Java* — Joshua Bloch
-- *Java Concurrency in Practice* — Brian Goetz
 - *Modern Java in Action* — Raoul-Gabriel Urma
-- *Modern Concurrency in Java (2025/2026)* - (A N M Bazlur Rahman)
 - *Thinking in Java* — Bruce Eckel
 - *Core Java Volumes I and II* - 13ª Edition — Cay S. Horstmann
 
-> **Scope**: This is the **general/pragmatic** Java instruction. It covers modern Java development best practices using a balanced mix of OOP and functional idioms. For a stricter **functional-first (purista)** approach emphasizing immutability, pure functions, and algebraic data types, see `java-functional.instructions.md`.
+> **Scope & Safety**:
+> - This is the **general/pragmatic** Java instruction targeting **JDK 21 LTS**.
+> - It covers modern Java development best practices using a balanced mix of OOP and functional idioms.
+> - Forward-looking notes for JDK 22/25+ and preview features are for information only; do **not** generate code using those features unless the project build files target that version and the user has clearly opted in.
+> - Never include real secrets, API keys, passwords, tokens, or proprietary identifiers in generated examples; always use safe placeholders such as `{{API_KEY}}`, `{{DB_PASSWORD}}`, `example.com`, or `user@example.com`.
+> - Assume generated code will be analyzed by tools such as **SonarLint/SonarQube** and **Checkstyle**; prefer changes that keep or improve static-analysis health.
+
+> **Conflict Resolution Order (for agents using this file)**
+> 1. Repository build configuration (Maven/Gradle Java version, dependencies)
+> 2. Static analysis rules (Sonar, Checkstyle)
+> 3. This instruction file (modern Java & Loom guidance)
+> 4. General style guides (for example, Google Java Style)
 
 ---
 
@@ -24,11 +33,8 @@ These rules apply to all `.java` source files and are grounded in:
 - **Prioritize Immutability**: Follow *Effective Java* (Item 17). Design classes to be immutable by default using `record`, `final` fields, and unmodifiable collections (`List.of`, `Map.of`).
 - **Prefer Declarative over Imperative**: Use the Streams API and Lambdas for collection processing. Ensure functional pipelines are "side-effect free" (do not modify state outside the stream).
 - **Embrace Modern Java Syntax**: Use Switch Expressions, Pattern Matching, and Records to reduce boilerplate and improve type safety.
-- **Virtual Thread Awareness (Project Loom)**:
-    - Design for high concurrency using Virtual Threads (`Executors.newVirtualThreadPerTaskExecutor()`).
-    - **Avoid Pinning**: Do not use `synchronized` blocks or methods for long-running I/O operations; replace them with `ReentrantLock` to allow Virtual Thread unmounting.
 - **Null Safety**: Never return `null` for methods returning sequences (return `List.of()`) or optional values (return `Optional.empty()`). Use `Objects.requireNonNull()` for mandatory arguments.
-- **Logging Boundary**: Logging must happen at the **application layer** (services, controllers, adapters), never inside pure domain logic. A dedicated logging instruction will cover this topic in depth.
+- **Logging Boundary**: Logging must happen at the **application layer** (services, controllers, adapters), never inside pure domain logic.
 - **Composition over Inheritance**: Follow *Effective Java* (Item 18). Use `sealed` interfaces to define strict hierarchies and favor composition to keep the architecture flexible.
 - **Static Analysis Compliance**:
     - All generated code must adhere to **SonarLint** and **Checkstyle** standards (e.g., avoiding cognitive complexity, proper resource management).
@@ -81,8 +87,7 @@ public class OrderProcessor {
 
 ### Key Improvements Rationale:
 
-1.  **Immutability by Default**: Grounded in *Effective Java*. It reduces bugs in concurrent environments (crucial for JDK 21+ Virtual Threads).
-2.  **Virtual Thread "Pinning" Warning**: This is a high-level requirement from *Modern Concurrency in Java*. If the AI generates `synchronized` blocks for I/O-bound code, it defeats the purpose of JDK 21's Virtual Threads.
+1.  **Immutability by Default**: Grounded in *Effective Java*. It reduces bugs, especially when code evolves or runs at scale.
 3.  **Declarative Style**: Based on *Modern Java in Action*. It encourages shorter, more readable code that is easier for the compiler to optimize.
 4.  **Exhaustive Switch & Records**: Replaces the old "General Instructions" boilerplate with the actual "Project Amber" features that define modern Java.
 5.  **Refined Static Analysis**: Instead of telling the user how to configure a Sonar server, it tells the AI to **comply** with those rules during code generation.
@@ -103,7 +108,7 @@ The table below summarises the key language and API features available as **stab
 | Pattern Matching for `switch` | JEP 441 | JDK 21 |
 | Text Blocks | JEP 378 | JDK 15 |
 | `var` (local type inference) | JEP 286 | JDK 10 |
-| Virtual Threads | JEP 444 | JDK 21 |
+<!-- Row removed: Virtual Threads (Project Loom) to keep this file focused on non-concurrent Java guidance. -->
 | Sequenced Collections | JEP 431 | JDK 21 |
 | `Stream.toList()` | — | JDK 16 |
 
@@ -137,7 +142,7 @@ return switch (payment) {
 Use `sealed` classes and interfaces to create **Algebraic Data Types (ADTs)**. This allows the compiler to ensure your domain logic handles every possible case.
 
 -   **Rule**: Favor sealed hierarchies over open inheritance when the set of types is known and fixed (e.g., `Result<T, E>`, `UIState`, `Command`).
--   **JDK 25 Note**: Use **Unnamed Variables (`_`)** for components you don't need during deconstruction.
+-   **JDK 25+ Note**: Unnamed variables (`_`) in patterns are available only in later JDKs; for projects targeting pure JDK 21, treat them as forward-looking and do not generate them unless the build configuration and user request explicitly allow a higher JDK.
 
 ```java
 // Modeling a Result type
@@ -152,30 +157,7 @@ var message = switch (result) {
 };
 ```
 
-### 3. Modern Concurrency (Project Loom)
-JDK 21/25 shifts the paradigm from thread pooling to **thread-per-task**.
-
--   **Virtual Threads**: Use `Executors.newVirtualThreadPerTaskExecutor()` for I/O-bound workloads. **Never pool virtual threads**.
--   **Avoid Pinning**: Do not use `synchronized` for long-running I/O. Use `ReentrantLock` to allow the carrier thread to unmount.
--   **Scoped Values (JDK 25 Stable)**: Replace `ThreadLocal` with `ScopedValue` for safer, immutable, and efficient context sharing across virtual threads.
-
-```java
-// JDK 25: Structured Concurrency & Scoped Values
-private static final ScopedValue<User> CURRENT_USER = ScopedValue.newInstance();
-
-public void handleRequest(Request req) {
-    ScopedValue.where(CURRENT_USER, authService.authenticate(req))
-               .run(() -> {
-                   try (var scope = new StructuredTaskScope.ShutdownOnFailure()) {
-                       Subtask<Data> data = scope.fork(() -> fetchData());
-                       scope.join().throwIfFailed();
-                       process(data.get());
-                   }
-               });
-}
-```
-
-### 4. Sequenced Collections (JDK 21+)
+### 3. Sequenced Collections (JDK 21+)
 Use the `SequencedCollection` family (`List`, `Deque`, `LinkedHashSet`) when the order of elements is a first-class citizen.
 
 -   **Avoid**: `list.get(0)` or `list.get(list.size() - 1)`.
@@ -233,28 +215,7 @@ public enum Operation {
 }
 ```
 
-### 10. Throttling with Virtual Threads
-
-- **No Pooling**: Never use `FixedThreadPool` for Virtual Threads.
-- **Resource Protection**: Use a `Semaphore` to limit the number of concurrent calls to fragile resources (databases, third-party APIs) to prevent exhaustion.
-
-#### Good Example - Semaphore Throttling
-```java
-public class ExternalService {
-    private static final Semaphore LIMITER = new Semaphore(50); // Max 50 concurrent calls
-
-    public Response call() throws InterruptedException {
-        LIMITER.acquire();
-        try {
-            return httpClient.send(request, handler); // Virtual thread blocks here safely
-        } finally {
-            LIMITER.release();
-        }
-    }
-}
-```
-
-### 11. Defensive API Design
+### 10. Defensive API Design
 
 - **Defensive Copies**: Return unmodifiable views or copies of internal mutable collections (*Effective Java*, Item 50).
 - **Optional vs Null**: Use `Optional` only as a return type to indicate "no result." Never use `Optional` for method parameters or class fields.
@@ -280,7 +241,7 @@ public record Department(String name, List<Employee> employees) {
 
 | Feature | JDK 21 (LTS) | JDK 25 |
 | :--- | :--- | :--- |
-| **Concurrency** | Virtual Threads (Stable), Structured Concurrency (Preview) | `StructuredTaskScope` (Stable), `ScopedValue` (Stable) |
+<!-- Row removed: Concurrency (Loom/virtual threads) to keep this table free of concurrent Java guidance. -->
 | **Patterns** | Record Patterns & Switch (Stable) | Unnamed Patterns `_` and Variables (Stable) |
 | **String Handling** | Use `.formatted()` or Text Blocks (JEP 378) | Use `.formatted()` or Text Blocks |
 | **Main Method** | Standard `public static void main` | Unnamed Classes & Instance Main (Stable) |
@@ -305,7 +266,7 @@ Follow the [Google Java Style Guide](https://google.github.io/styleguide/javagui
 | **Methods** | `lowerCamelCase` | Verbs (e.g., `calculateTotal`, `isAvailable`). |
 | **Record Components** | `lowerCamelCase` | Nouns (e.g., `id`, `createdAt`). Avoid `get` prefix. |
 | **Variables / `var`** | `lowerCamelCase` | Short but descriptive. Avoid `list1`, `data`. |
-| **Virtual Threads** | `lower-hyphen` | Use descriptive names for debugging (e.g., `worker-pool-1`). |
+<!-- Row removed: Virtual Threads naming convention to exclude Loom-specific guidance. -->
 | **Unnamed Vars (JDK 22+)** | `_` | Use a single underscore for unused variables in patterns/catch blocks. **Not available in JDK 21** (Preview via JEP 443). Stable since JDK 22 (JEP 456). |
 
 -   **Rule on `var`**: Use local variable type inference only when the type is **obvious** from the assignment (e.g., `var list = new ArrayList<String>();`). Avoid `var` when the return type of a method is not immediately clear.
@@ -317,8 +278,6 @@ Follow the [Google Java Style Guide](https://google.github.io/styleguide/javagui
 -   **Prefer Unchecked Exceptions**: Use `RuntimeException` for programming errors. Use checked exceptions only for truly recoverable business conditions (*Effective Java, Item 70*).
 -   **Specific Catching**: Never catch `Throwable` or `Exception`. Catch the most specific subtype.
 -   **No Swallowing**: Catch blocks must either log the stack trace, rethrow, or handle the error.
--   **Structured Failure**: When using `StructuredTaskScope` (JDK 25), always use `.throwIfFailed()` to propagate subtask exceptions correctly.
-
 ```java
 // Good: Resource management + Specific exception
 try (var stream = Files.lines(path)) {
@@ -326,7 +285,11 @@ try (var stream = Files.lines(path)) {
 } catch (IOException e) {
     throw new UncheckedIOException("Critical failure reading config: " + path, e);
 }
+```
 
+> **Note (JDK 25+ only)**: The unnamed catch parameter (`_`) is available only in later JDKs. For strict JDK 21 targets, use a named exception variable instead; treat the following as forward-looking guidance.
+
+```java
 // Good: JDK 25 Unnamed Catch
 try {
     Integer.parseInt(input);
@@ -394,29 +357,7 @@ public record Money(BigDecimal amount, String currency) {
 
 ## Common Bug Patterns
 
-### 1. Virtual Thread Pinning (Project Loom)
-**Bug:** Using `synchronized` blocks or methods around long-running I/O operations.
-**Why:** In JDK 21/25, this "pins" the virtual thread to its carrier (platform) thread, preventing the JVM from re-scheduling other tasks and potentially leading to thread starvation or memory exhaustion.
-
--   **Fix:** Replace `synchronized` with `java.util.concurrent.locks.ReentrantLock` for long-running I/O.
--   **Fix:** Keep `synchronized` only for very fast, in-memory operations.
-
-```java
-// Avoid: Pins the carrier thread during I/O
-synchronized (lock) {
-    return httpClient.send(request, bodyHandler);
-}
-
-// Good: ReentrantLock allows the virtual thread to unmount
-lock.lock();
-try {
-    return httpClient.send(request, bodyHandler);
-} finally {
-    lock.unlock();
-}
-```
-
-### 2. Identity-Sensitive Operations on Value-Based Classes
+### 1. Identity-Sensitive Operations on Value-Based Classes
 **Bug:** Synchronizing on, or using identity equality (`==`) with value-based classes like `Optional`, `Duration`, `LocalDate`.
 **Why:** Value-based classes are designed to be transparent wrappers around their values. Synchronizing on them can throw exceptions or cause unpredictable deadlocks.
 
@@ -492,7 +433,7 @@ List<String> results = users.stream()
 
 | Bug Type | JDK 21 Prevention | JDK 25 Prevention |
 | :--- | :--- | :--- |
-| **Concurrency** | Detection of Pinning via JFR events. | **Structured Concurrency** prevents orphan threads. |
+<!-- Row removed: Concurrency bug-prevention line related to Loom/pinning. -->
 | **Logic Errors** | Pattern Matching exhaustiveness. | **Unnamed Patterns (`_`)** prevent unused variable clutter. |
 | **Resource Leaks** | Standard Try-with-resources. | **Scoped Values** replace risky `ThreadLocal` inheritance. |
 
@@ -501,7 +442,7 @@ List<String> results = users.stream()
 ### Rationale from Literature:
 1.  **Defensive Copying**: A core theme in *Effective Java*. Even with modern Records, the "immutability" is shallow by default.
 2.  **Stream Purity**: *Modern Java in Action* argues that the power of Streams lies in their ability to be parallelized, which is impossible if they have side effects.
-3.  **Loom Performance**: *Modern Concurrency in Java* (2025) highlights **Pinning** as the most common anti-pattern for developers moving from platform threads to virtual threads.
+<!-- Bullet removed: Loom performance / pinning discussion. -->
 4.  **Identity-less Objects**: Cay Horstmann's *Core Java* (13th Edition) warns that identity-based operations on value-based classes are deprecated in preparation for Project Valhalla.
 
 ---
@@ -536,14 +477,7 @@ void process(Email email, Money amount) { ... }
 -   **Extract Method**: Split logic into private helper methods.
 -   **Decomposition**: If a method handles multiple steps, consider a `record` to encapsulate the intermediate state.
 
-### 4. Over-reliance on `synchronized` (Loom Context)
-**The Smell:** Frequent use of `synchronized` keywords in high-concurrency applications.
-**The Modern Cure:**
--   In the age of **Virtual Threads**, `synchronized` can lead to **Pinning**.
--   Use `ReentrantLock` or `java.util.concurrent` classes (`ConcurrentHashMap`, `AtomicReference`).
--   Shift toward **Immutability** to avoid the need for locks entirely (*Java Concurrency in Practice*).
-
-### 5. Imperative "How" instead of Functional "What"
+### 4. Imperative "How" instead of Functional "What"
 **The Smell:** Manually managing loop counters, temporary lists, and state transformations.
 **The Modern Cure:** Use **Streams**. Focus on what should be done with the data, not how to iterate over it (*Effective Java, Item 45*).
 
@@ -577,7 +511,7 @@ List<String> activeNames = users.stream()
 
 ### 8. Unused Variables and Parameters
 **The Smell:** Keeping variables, parameters, or catch-block exceptions that are never used.
-**The Modern Cure (JDK 25):** Use the **Unnamed Variable (`_`)**. It explicitly signals to the reader (and the compiler) that the value is intentionally ignored, reducing clutter.
+**The Modern Cure (JDK 25+):** Use the **Unnamed Variable (`_`)** where the project targets a JDK version that supports it. For strict JDK 21 targets, continue to use named variables and treat this as forward-looking guidance.
 
 ```java
 // JDK 25: Explicitly ignoring an unused variable
@@ -626,24 +560,7 @@ public record PayPal(String email) implements PaymentMethod {}
 public record Crypto(String walletAddress, String currency) implements PaymentMethod {}
 ```
 
-### 2. Concurrency: Thread-per-Task (Project Loom)
-JDK 21/25 architecture favors **simplicity and blocking I/O** over complex reactive or asynchronous frameworks.
-
--   **Rule**: For I/O-bound services, use **Virtual Threads** to handle concurrent requests. Avoid the complexity of `Mono`/`Flux` (Project Reactor) unless you require backpressure across network boundaries.
--   **Structured Concurrency (JDK 25 Stable)**: Use `StructuredTaskScope` to treat groups of related tasks as a single unit of work. This ensures that if a parent task is cancelled, all subtasks are cleanly shut down (*Modern Concurrency in Java, 2025*).
-
-```java
-// JDK 25 Architecture: Structured Concurrency
-try (var scope = new StructuredTaskScope.ShutdownOnFailure()) {
-    Subtask<User> user = scope.fork(userRepo::fetch);
-    Subtask<Orders> orders = scope.fork(orderRepo::fetch);
-
-    scope.join().throwIfFailed(); // Propagates errors correctly
-    return new Dashboard(user.get(), orders.get());
-}
-```
-
-### 3. Encapsulation and Access Control
+### 2. Encapsulation and Access Control
 Enforce strict boundaries to reduce the surface area of your API (*Effective Java, Item 15*).
 
 -   **Final by Default**: Use `final` for classes unless they are designed for inheritance.
@@ -678,36 +595,28 @@ public sealed interface OrderResult {
 
 | Category | JDK 21 (LTS) Approach | JDK 25 Approach |
 | :--- | :--- | :--- |
-| **Concurrency** | Virtual Thread Executors (Standard). Project Reactor for complex backpressure. | **StructuredTaskScope** for task hierarchies. Simpler, thread-per-task model. |
-| **Context** | `ThreadLocal` (Use with caution). | **ScopedValue** (Immutable, efficient context). |
+<!-- Rows removed: Concurrency and Context entries related to Loom/ScopedValue. -->
 | **Integration** | JNI (Complex, unsafe). | **Foreign Function & Memory API** (Safe, high-perf). |
 
 ---
 
 ### Rationale from Literature:
 1.  **Algebraic Data Types**: *Modern Java in Action* explains that combining `sealed` and `records` provides the same safety as functional languages like Haskell or Scala, making the code "correct by construction."
-2.  **Loom Architecture**: Bazlur Rahman argues in *Modern Concurrency in Java* that the "Reactive" era was a workaround for expensive threads. Virtual Threads allow us to return to the simpler "thread-per-request" model without sacrificing scalability.
-3.  **Encapsulation**: Joshua Bloch (*Effective Java*) notes that every class or member should be as inaccessible as possible. `sealed` classes provide a middle ground between `public` and `final` that was missing for decades.
-4.  **Immutability**: Cay Horstmann emphasizes that in a multi-threaded world (especially with thousands of virtual threads), shared mutable state is the primary enemy. Records are the architectural solution to this problem.
+2.  **Encapsulation**: Joshua Bloch (*Effective Java*) notes that every class or member should be as inaccessible as possible. `sealed` classes provide a middle ground between `public` and `final` that was missing for decades.
+3.  **Immutability**: Cay Horstmann emphasizes that in a multi-threaded world, shared mutable state is the primary enemy. Records are the architectural solution to this problem.
 
 ---
 
 ## Performance
 
-This section details how to achieve maximum throughput and efficiency in **JDK 21** and **JDK 25**. Performance in modern Java is less about micro-optimizing loops and more about **memory locality**, **reducing contention**, and effectively leveraging **Project Loom**.
+This section details how to achieve maximum throughput and efficiency in **JDK 21** and **JDK 25** without focusing on concurrent Java or Project Loom. Performance in modern Java is less about micro-optimizing loops and more about **memory locality**, **data structures**, and **avoiding unnecessary allocations**.
 
 ### 1. The Golden Rule: Profile Before Optimizing
 Following *Effective Java (Item 67)*: "Adhere to generally accepted design principles to build a robust system, then profile it."
 -   **Java Flight Recorder (JFR)**: Use `-XX:StartFlightRecording` in production. It has near-zero overhead and provides deep insights into JVM internals.
 -   **JMH (Java Microbenchmark Harness)**: Never rely on `System.currentTimeMillis()` for benchmarks. Use JMH to account for JIT warm-up and dead-code elimination.
 
-### 2. Virtual Thread Throughput vs. Latency
-Virtual threads provide **high throughput**, not lower latency.
--   **Don't Pool Virtual Threads**: Creating a virtual thread is as cheap as creating a `String`. Pooling them adds unnecessary synchronization overhead.
--   **Throttling**: If you need to limit concurrency (e.g., to avoid overwhelming a database), use a `Semaphore` instead of a fixed-size `ExecutorService`.
--   **Carrier Thread Pinning**: Monitor JFR events for `jdk.VirtualThreadPinned`. Pinning occurs when a virtual thread cannot be unmounted during I/O (usually due to `synchronized`). This forces the JVM to spawn more OS threads, increasing memory pressure.
-
-### 3. Minimize Boxing and Object Overhead
+### 2. Minimize Boxing and Object Overhead
 Object headers and pointers waste cache space. *Modern Java in Action* and *Effective Java (Item 61)* warn against the performance tax of wrappers.
 -   **Primitive Streams**: Use `IntStream`, `LongStream`, and `DoubleStream` to avoid boxing `int` to `Integer`.
 -   **Records for Data**: Use Records and immutable collections (`List.of()`, `Map.of()`) which have better memory locality and are more cache-efficient than their mutable counterparts.
@@ -720,41 +629,29 @@ List<Integer> list = IntStream.range(0, 1_000_000).boxed().toList();
 int[] array = IntStream.range(0, 1_000_000).toArray();
 ```
 
-### 4. Efficient Collection Usage
+### 3. Efficient Collection Usage
 -   **Initial Capacity**: Always specify initial capacity for `ArrayList` or `HashMap` if the size is known, avoiding expensive resizing/rehashing.
--   **Sequenced Collections (JDK 21+)**: Use `getFirst()`/`getLast()`. For `LinkedList`, these are $O(1)$ at the boundaries, but remember that for random access, `ArrayList` is almost always faster due to CPU cache efficiency.
+-   **Sequenced Collections (JDK 21+)**: Use `getFirst()`/`getLast()` on sequenced collections. For random access, `ArrayList` is usually faster due to CPU cache efficiency.
 -   **Immutability**: `List.of()` and `Map.of()` are not just for safety; they are more memory-efficient than their mutable counterparts.
 
-### 5. String Manipulation
+### 4. String Manipulation
 -   **Concatenation**: Use `StringBuilder` only inside loops. For simple multi-part strings, the `+` operator is optimized by the compiler using `StringConcatFactory` (*Core Java, Vol I*).
 -   **Text Blocks**: Use Text Blocks for large multiline strings; they are processed at compile-time and do not add runtime overhead.
 -   **Compact Strings**: Be aware that Java internally uses `byte[]` instead of `char[]` for Latin-1 strings, reducing heap usage by 50% for most text.
 
-### 6. Foreign Function & Memory API (JDK 22+ / 25 Stable)
+### 5. Foreign Function & Memory API (JDK 22+ / 25 Stable)
 If your application handles massive datasets or interacts with native libraries (C/C++):
 -   **Move away from JNI**: Use **Project Panama** (`java.lang.foreign`). It provides safer and significantly faster access to off-heap memory, bypassing GC overhead for large buffers.
 
-### 7. Modern GC Selection
+### 6. Modern GC Selection
 -   **G1GC**: The reliable default for most applications.
--   **ZGC (Generational)**: Use `-XX:+UseZGC -XX:+ZGenerational` (fully stable in JDK 21+). It maintains sub-millisecond pause times even with multi-terabyte heaps, making it ideal for low-latency virtual thread applications.
-
----
-
-### Comparison: Performance Features (JDK 21 vs JDK 25)
-
-| Feature | JDK 21 (LTS) Status | JDK 25 Status |
-| :--- | :--- | :--- |
-| **Virtual Threads** | Stable. Requires `synchronized` awareness. | More resilient; better JFR tooling for pinning. |
-| **Off-heap Memory** | Foreign Linker/Memory (Preview). | **Project Panama** (Stable/Final). |
-| **String Handling** | Text Blocks (JEP 378, Stable). | Text Blocks + enhanced `.formatted()` methods. |
+-   **ZGC (Generational)**: Use `-XX:+UseZGC -XX:+ZGenerational` (fully stable in JDK 21+). It maintains low pause times even with large heaps.
 
 ---
 
 ### Rationale from Literature:
 1.  **Effective Java (Item 67)**: Bloch reminds us that "fast" is often the enemy of "correct." Focus on clean architecture (Records, Interfaces) first; the JIT compiler is excellent at optimizing well-structured code.
-2.  **Java Concurrency in Practice**: Goetz highlights that **contention** (many threads fighting for one lock) is the biggest performance killer. Virtual threads amplify this; hence the move toward `ReentrantLock` and Scoped Values.
-3.  **Modern Concurrency in Java (2025)**: Bazlur Rahman emphasizes that because virtual threads are so numerous, the memory used by `ThreadLocal` variables can quickly crash a heap. **Scoped Values** (JDK 25) solve this performance bottleneck.
-4.  **Core Java (Horstmann)**: Emphasizes that the move toward `Stream.toList()` and immutable collections allows the JVM to make assumptions that lead to better JIT optimizations.
+2.  **Core Java (Horstmann)**: Emphasizes that the move toward `Stream.toList()` and immutable collections allows the JVM to make assumptions that lead to better JIT optimizations.
 
 
 
@@ -766,7 +663,6 @@ If your application handles massive datasets or interacts with native libraries 
 -   **Test Framework**: **JUnit 5** (Jupiter). Utilize `@ParameterizedTest`, `@Nested`, and `@DisplayName`.
 -   **Assertions**: **AssertJ**. Use fluent assertions for readability. Avoid `junit.jupiter.api.Assertions`.
 -   **Mocking**: **Mockito**. Use `@Mock` and `@InjectMocks` with the `MockitoExtension`.
--   **Concurrency Testing**: Use **Awaitility** for testing asynchronous or virtual-thread-based logic.
 
 ### 2. Naming and Structure: AAA Pattern
 Follow the **Arrange-Act-Assert (AAA)** pattern to ensure tests are self-documenting.
@@ -788,32 +684,13 @@ void constructor_NegativeAmount_ThrowsException() {
 }
 ```
 
-### 4. Testing Concurrency (Project Loom)
-Testing **Virtual Threads** requires shifting from "thread-blocking" tests to "throughput/logical" tests.
--   **Virtual Thread Execution**: Use `Executors.newVirtualThreadPerTaskExecutor()` in tests to ensure logic works under Loom.
--   **Avoid Fixed Delays**: Never use `Thread.sleep()`. Use **Awaitility** to poll for conditions.
--   **Timeout Handling**: Always wrap concurrent tests in a `assertTimeoutPreemptively` or use the JUnit 5 `@Timeout` annotation to prevent hanging builds.
-
-```java
-@Test
-void asyncTask_CompletesSuccessfully_WithVirtualThreads() {
-    try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
-        var future = executor.submit(() -> "Done");
-
-        // Use Awaitility for non-blocking verification
-        await().atMost(Duration.ofSeconds(2))
-               .untilAsserted(() -> assertThat(future.get()).isEqualTo("Done"));
-    }
-}
-```
-
-### 5. Fluent Assertions with AssertJ
+### 4. Fluent Assertions with AssertJ
 Maximize the use of AssertJ’s domain-specific assertions to improve failure messages.
 -   **Collections**: Use `containsExactly()`, `hasSize()`, or `allSatisfy()`.
 -   **Optionals**: Use `isPresent()`, `contains()`, or `isEmpty()`.
 -   **Exceptions**: Use `assertThatThrownBy()` and verify the cause chain.
 
-### 6. Parameterized Testing
+### 5. Parameterized Testing
 Avoid duplicated test logic by using `@ParameterizedTest`. This is the preferred way to test boundary conditions (Effective Java, Item 42).
 
 ```java
@@ -828,32 +705,7 @@ void divide_ValidInputs_ReturnsExpected(int a, int b, int expected) {
 }
 ```
 
-### 7. Structured Concurrency Testing (JDK 25)
-When testing logic using `StructuredTaskScope`, verify that failures in subtasks propagate correctly and that the scope closes as expected.
-
-```java
-// JDK 25: Testing StructuredTaskScope
-@Test
-void fetchDetails_SubtaskFails_ThrowsExecutionException() {
-    try (var scope = new StructuredTaskScope.ShutdownOnFailure()) {
-        scope.fork(() -> { throw new RuntimeException("Fail"); });
-
-        assertThatThrownBy(() -> scope.join().throwIfFailed())
-            .isInstanceOf(ExecutionException.class);
-    }
-}
-```
-
 ---
-
-### Comparison: Testing Evolution (JDK 21 vs JDK 25)
-
-| Feature | JDK 21 (LTS) Strategy | JDK 25 Strategy |
-| :--- | :--- | :--- |
-| **Mocking** | Standard Mockito. | Mockito works natively with Virtual Threads. |
-| **Async Tests** | `CompletableFuture` + `join()`. | **`StructuredTaskScope`** (Stable) for simpler lifecycle tests. |
-| **Data Setup** | Records as DTOs. | **Unnamed Variables (`_`)** in tests to ignore irrelevant components. |
-| **Timeout** | `@Timeout` annotation. | Better `StructuredTaskScope` timeout integration. |
 
 ---
 
@@ -861,9 +713,7 @@ void fetchDetails_SubtaskFails_ThrowsExecutionException() {
 
 | Issue | Solution | Pattern |
 | :--- | :--- | :--- |
-| **Carrier Thread Pinning** | Avoid `synchronized` for I/O | Use `ReentrantLock` |
 | **Expensive Resizing** | Pre-size Collections | `new ArrayList<>(expectedSize)` |
-| **Leaky Context** | Replace `ThreadLocal` | Use `ScopedValue` (JDK 25) |
 | **Boolean Hell** | Use Enum/Sealed types | `switch(status)` |
 | **Deep Inheritance** | Favor Composition | Use private fields + Interface delegation |
 
@@ -871,9 +721,8 @@ void fetchDetails_SubtaskFails_ThrowsExecutionException() {
 
 ### Rationale from Literature:
 1.  **Effective Java (Item 10-12)**: Bloch notes that manual `equals/hashCode` are a frequent source of bugs. By using Records and trusting the compiler, we shift testing focus to **Business Logic**.
-2.  **Core Java (Horstmann)**: Emphasizes that unit tests should be "fast and repeatable." Virtual Threads make it possible to run thousands of "concurrent" tests in milliseconds without the overhead of platform thread pools.
-3.  **Modern Concurrency in Java (Rahman)**: Argues that testing for **Pinning** should be part of the performance suite using JFR, while unit tests focus on the functional correctness of the virtual threads.
-4.  **JUnit 5 User Guide**: Recommends `@Nested` tests to group behavior by state (e.g., `WhenAccountIsLocked`, `WhenBalanceIsZero`), creating a specification-like test suite.
+2.  **Core Java (Horstmann)**: Emphasizes that unit tests should be "fast and repeatable," with clear structure and readable assertions.
+3.  **JUnit 5 User Guide**: Recommends `@Nested` tests to group behavior by state (e.g., `WhenAccountIsLocked`, `WhenBalanceIsZero`), creating a specification-like test suite.
 
 ---
 

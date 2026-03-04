@@ -17,16 +17,48 @@ Recommendations are grounded in industry-standard literature:
 
 > **Scope**: This is the **functional-first (purista)** Java instruction. It enforces strict functional programming principles — immutability, pure functions, algebraic data types, and declarative pipelines — as the **primary design approach**. For a more **general/pragmatic** Java instruction covering mixed paradigms (OOP + functional), see `java-improved.instructions.md`.
 
+---
+
+## Scope, Safety, and Precedence
+
+- **Target JDK:** Always adapt code generation to the project’s **actual** Java version:
+    - If the build configuration, CI, or toolchain indicates **JDK 21**, default to JDK 21-compatible features.
+    - Only generate **JDK 22+/24/25** or preview features (Stream.gather, primitive patterns, unnamed variables `_`) when:
+        - The project build explicitly targets that version or higher, **and**
+        - The user or project documentation has opted in to those features.
+- **Security & Privacy:**
+    - Never generate hard-coded secrets, tokens, passwords, API keys, or real hostnames/URLs.
+        - Always use placeholders such as `{{API_KEY}}`, `{{DB_PASSWORD}}`, `https://example.com`, `user@example.com`, or similar.
+    - Do not include real personal data (names, emails, addresses, IDs) from production or internal systems; use clearly fictional sample data.
+    - Prefer APIs and patterns that support safe input handling (e.g., prepared statements over string-concatenated SQL).
+- **Organizational Policies:**
+    - If project-specific or organizational guidelines (security, logging, privacy, domain rules) are present in the repository, they **override** any conflicting recommendations in this file.
+    - Never weaken authentication, authorization, auditing, or input validation in order to “simplify” code.
+- **Instruction Precedence Order:**
+    1. Project build configuration (Maven/Gradle Java version, dependencies, framework constraints).
+    2. Static analysis rules and quality gates (SonarQube/SonarLint, Checkstyle, organization-specific rules).
+    3. Project-specific security, privacy, and logging policies.
+    4. This file (`java-functional.instructions.md`).
+    5. More general Java guidelines (e.g., `java-improved.instructions.md`) and external style guides.
+- **Safety on Conflicting Requests:**
+    - If a user request or comment conflicts with this file in a way that could:
+        - Weaken security (e.g., disabling validation, logging secrets),
+        - Introduce data races or unsafe concurrency,
+        - Remove important error handling,
+        then **prefer the safer option** and call out the trade-off in comments or explanation.
+
+---
+
 ## General Instructions
 
-- **Determine Target Version**: Always adapt code generation to the project's target JDK (21 or 25). If the context does not explicitly indicate JDK 25, default to JDK 21 compatibility.
+- **Determine Target Version**: Always adapt code generation to the project's target JDK (21 or 25). If the context does not explicitly indicate JDK 25, default to JDK 21 compatibility and avoid using features that are only stable in later releases.
 - **Default to Immutability**: Treat immutability as the absolute default (*Effective Java*, Item 17). Mutability must be strictly isolated and justified.
 - **Enforce Pure Functions**: Design methods to produce the same output for the same input with zero observable side effects.
 - **Push Side Effects to Boundaries**: Keep the domain core pure. Perform I/O, logging, and database operations only at the outermost architectural layers (Adapters/Controllers).
 - **Logging Boundary**: Logging must happen at the **application layer** (services, controllers, adapters), never inside pure domain logic. A dedicated logging instruction will cover this topic in depth.
 - **Model Failures as Values**: Use sealed interface result types (e.g., `Result<T, E>`) for expected business failures instead of throwing exceptions across domain boundaries.
-- **Assume Virtual Threads Execution**: Write thread-safe code by confining state to the execution thread. Do not use `ThreadLocal` or shared mutable state; rely on immutability to prevent data races (*Java Concurrency in Practice*).
 - **Adhere to Static Analysis Rules**: Always generate code compliant with standard SonarQube rules (e.g., prevent resource leaks `S2095`). Never generate code smells or deprecated patterns.
+- **Use Placeholders for Sensitive Values**: When examples require credentials, tokens, endpoints, or user data, always use obvious placeholders and sample data (e.g., `{{API_KEY}}`, `{{DB_PASSWORD}}`, `https://example.com`, `user@example.com`), never real values.
 
 ## JDK Features Baseline
 
@@ -38,12 +70,9 @@ Leverage the following modern Java features by default to support functional des
 | **Sealed Classes** | 17 (21+) | Model closed-hierarchy domain states and Algebraic Data Types (Sum Types). |
 | **Record Patterns** | 21 | Destructure records directly in `switch` and `instanceof` (e.g., `case Point(int x, int y)`). |
 | **Pattern Matching for switch** | 21 | Perform exhaustive structural dispatch without explicit casting or `default` fallbacks for sealed types. |
-| **Virtual Threads** | 21 | Execute blocking I/O concurrently without complex reactive plumbing (`Mono`/`Flux`). |
 | **Sequenced Collections** | 21 | Traverse collections with predictable encounter orders (`getFirst()`, `getLast()`). |
 | **Unnamed Variables (`_`)** | 22 (stable) | Ignore unused variables in lambdas, exceptions, or pattern matching. **Not available in JDK 21** (Preview via JEP 443). Stable since JDK 22 (JEP 456). |
 | **Stream Gatherers** | 24 (stable) | Create custom intermediate stream operations (`Stream.gather()`). Preview in JDK 22–23 (JEP 461/473), **stable since JDK 24** (JEP 485). |
-| **Structured Concurrency** | 25 (stable) | Orchestrate multiple concurrent subtasks reliably using `StructuredTaskScope`. Preview in JDK 21 (JEP 453), **stable in JDK 25** (JEP 505). |
-| **Scoped Values** | 25 (stable) | Propagate immutable, read-only context across threads. **Preview in JDK 21** (JEP 446), **stable in JDK 25** (JEP 506). |
 | **Primitive Patterns** | 25 | Dispatch over primitives in `switch` statements without boxing. |
 
 ## Version-Specific Conditional Guidance
@@ -51,17 +80,14 @@ Leverage the following modern Java features by default to support functional des
 Apply these specific rules based on the detected or requested JDK version.
 
 ### For JDK 21 (LTS) Projects
-- **Concurrency**: Use `CompletableFuture` combined with an `Executor` backed by Virtual Threads (`Executors.newVirtualThreadPerTaskExecutor()`) for parallel I/O tasks. `StructuredTaskScope` and `ScopedValue` are available as **Preview** (JEP 453/446) — do not use in production.
 - **Streams**: Rely on standard `Stream` API operations (`map`, `filter`, `reduce`, `collect`). `Stream.gather()` is **not available** in JDK 21. Extract complex transformations into pure functions.
 - **Variables**: **Unnamed Variables (`_`) are not available in JDK 21** (Preview only in JDK 22+). Name unused variables explicitly (e.g., `ignored` or `ex`).
 
 ### For JDK 25 Projects
-- **Concurrency**: Prefer `StructuredTaskScope` (JEP 505, stable) over `CompletableFuture` for orchestrating multiple concurrent I/O calls to guarantee thread lifecycle management. Use `ScopedValue` (JEP 506, stable) over `ThreadLocal`.
 - **Streams**: Use `Stream.gather()` (JEP 485, stable since JDK 24) for complex, stateful intermediate stream operations. Gatherers enable custom transformations (windowing, scanning, folding) without breaking the declarative pipeline.
 - **Variables**: Use the Unnamed Variable `_` (JEP 456, stable since JDK 22) for ignored exceptions, lambda parameters, or pattern variables.
 
-### Universal Anti-Patterns (Avoid in both JDK 21 and 25)
-- **Avoid Thread Pooling for I/O**: Do not use `Executors.newFixedThreadPool()` for I/O tasks. Always use Virtual Threads.
+### Universal Guidance
 - **String Handling**: Use `String.formatted()` or Text Blocks (`"""`) for string composition. These are stable since JDK 15+.
 
 ---
@@ -460,137 +486,6 @@ record ValidationResult<T>(T value, List<String> errors) {
 
 ---
 
-## Reactive and Concurrent Design
-
-### 1. Virtual Threads (JDK 21+)
-
-Use virtual threads for I/O-bound concurrent tasks. They provide reactive-like throughput without the complexity of `Mono` or `Flux` (*Reactive Systems in Java*, ch. 3).
-
-- Virtual threads are lightweight — do **not** pool them.
-- Prefer `Executors.newVirtualThreadPerTaskExecutor()`.
-
-#### Good Example - Virtual Threads Execution
-```java
-try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
-    List<Future<Response>> futures = urls.stream()
-        .map(url -> executor.submit(() -> fetch(url)))
-        .toList();
-
-    // Process futures...
-}
-```
-
-#### Bad Example - Thread Pooling for I/O
-```java
-// Platform thread pools block OS threads for I/O-bound work
-ExecutorService pool = Executors.newFixedThreadPool(200);
-```
-
-### 2. Concurrent Fan-out Orchestration
-
-When splitting a task into multiple concurrent sub-tasks, the approach strictly depends on the target JDK version.
-
-#### Good Example - JDK 25 (StructuredTaskScope)
-Use `StructuredTaskScope` (JEP 505) to ensure child threads do not outlive their parent scope, making error propagation explicit and preventing resource leaks.
-```java
-record UserPage(User user, List<Order> orders) {}
-
-UserPage fetchUserPage(long userId) throws InterruptedException {
-    try (var scope = new StructuredTaskScope.ShutdownOnFailure()) {
-        Subtask<User>        userTask   = scope.fork(() -> userService.findById(userId));
-        Subtask<List<Order>> ordersTask = scope.fork(() -> orderService.findByUser(userId));
-
-        scope.join().throwIfFailed(); // Cancels sibling tasks immediately on failure
-
-        return new UserPage(userTask.get(), ordersTask.get());
-    }
-}
-```
-
-#### Good Example - JDK 21 (CompletableFuture + Virtual Threads)
-For JDK 21, since `StructuredTaskScope` is in preview, combine `CompletableFuture` with a Virtual Thread Executor.
-```java
-record UserPage(User user, List<Order> orders) {}
-
-UserPage fetchUserPage(long userId) {
-    try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
-        CompletableFuture<User> userFuture =
-            CompletableFuture.supplyAsync(() -> userService.findById(userId), executor);
-
-        CompletableFuture<List<Order>> ordersFuture =
-            CompletableFuture.supplyAsync(() -> orderService.findByUser(userId), executor);
-
-        return userFuture.thenCombine(ordersFuture, UserPage::new).join();
-    }
-}
-```
-
-#### Bad Example - Unstructured Fan-out (Avoid in all versions)
-```java
-// If userTask throws an exception, orderTask continues running in the background (resource leak)
-CompletableFuture<User>        userTask  = CompletableFuture.supplyAsync(() -> fetchUser());
-CompletableFuture<List<Order>> orderTask = CompletableFuture.supplyAsync(() -> fetchOrders());
-```
-
-### 3. Context Propagation
-
-Propagating implicit context (like a security principal or request ID) requires different strategies based on the JDK version (*Functional and Reactive Domain Modeling*, ch. 6).
-
-#### Good Example - JDK 25 (Scoped Values)
-Use `ScopedValue` (JEP 506) to propagate immutable, read-only context across virtual threads without the mutability and leak risks of `ThreadLocal`.
-```java
-static final ScopedValue<Principal> PRINCIPAL = ScopedValue.newInstance();
-
-void handleRequest(HttpRequest req) {
-    ScopedValue.where(PRINCIPAL, authenticate(req))
-               .run(() -> processRequest(req)); // PRINCIPAL is securely bound for this scope
-}
-
-void processRequest(HttpRequest req) {
-    Principal p = PRINCIPAL.get(); // Immutable access
-}
-```
-
-#### Good Example - JDK 21 (Explicit Parameter Passing)
-Because `ScopedValue` is in preview in JDK 21, and `ThreadLocal` is dangerous with virtual threads, strictly prefer explicit parameter passing (the purely functional way).
-```java
-void handleRequest(HttpRequest req) {
-    Principal principal = authenticate(req);
-    processRequest(req, principal); // Explicit passing
-}
-```
-
-#### Bad Example - ThreadLocal with Virtual Threads
-```java
-static final ThreadLocal<Principal> PRINCIPAL = new ThreadLocal<>();
-// Mutable, easy to forget .remove(), leaks memory, and performs poorly with virtual threads
-PRINCIPAL.set(principal);
-```
-
-
-### 4. Structured Concurrency (JDK 25)
-Use `StructuredTaskScope` to manage subtask lifecycles.
-
-- **Use `ShutdownOnFailure`** to ensure that if one subtask fails, siblings are cancelled immediately.
-- **Avoid Orphan Threads**: Always use try-with-resources with `StructuredTaskScope`.
-
-### 5. Scoped Values (JDK 25)
-Use `ScopedValue` to propagate immutable context across threads.
-
-- **Use over `ThreadLocal`**: Scoped values are more memory-efficient and safer for Virtual Threads.
-
-#### Good Example - ScopedValue Context
-```java
-static final ScopedValue<TenantId> TENANT = ScopedValue.newInstance();
-
-void handle(Request req) {
-    ScopedValue.where(TENANT, extractId(req))
-               .run(() -> process(req));
-}
-```
-
----
-
 ## Functor and Monad Patterns
 
 In functional programming, **Functors** and **Monads** are design patterns for composing operations over wrapped values. Java implements these patterns through `Optional`, `Stream`, `CompletableFuture`, and custom sealed types like `Result<T, E>` (*Functional Programming in Java*, ch. 4–5).
@@ -826,7 +721,6 @@ In a functional codebase, type visibility is especially important: the type of a
 // Good — type is unambiguous from the constructor or factory
 var users   = new ArrayList<User>();
 var timeout = Duration.ofSeconds(30);
-var scope   = new StructuredTaskScope.ShutdownOnFailure(); // JDK 25
 
 // Good — var in lambda parameters to attach annotations (JDK 11+)
 BiFunction<String, String, String> concat = (@NonNull var a, @NonNull var b) -> a + b;
@@ -846,7 +740,6 @@ The code already shows *what*; Javadoc must explain *why*, *when*, and *what is 
 
 - Use `@param`, `@return`, and `@throws` consistently.
 - Declare purity explicitly with `@implSpec` when a method is a pure function.
-- Document thread-safety guarantees for types used in concurrent contexts.
 - Use `@Deprecated(since = "...", forRemoval = true)` for planned removals,
   aligned with a major version increment to avoid breaking callers.
 
@@ -944,8 +837,8 @@ public List<Order> getOrders() {
 
 ### 6. Resource Management
 
-Use **try-with-resources** for every `AutoCloseable` type (files, sockets, JDBC connections,
-`StructuredTaskScope`). Manual `close()` calls are not acceptable — they are silently skipped
+Use **try-with-resources** for every `AutoCloseable` type (files, sockets, JDBC connections).
+Manual `close()` calls are not acceptable — they are silently skipped
 when an exception is thrown before the call is reached.
 
 ```java
@@ -954,34 +847,11 @@ try (var reader = new BufferedReader(new FileReader(path))) {
     return reader.readLine();
 }
 
-// Good — StructuredTaskScope is AutoCloseable; always use try-with-resources (JDK 25)
-try (var scope = new StructuredTaskScope.ShutdownOnFailure()) {
-    var task = scope.fork(() -> fetchData());
-    scope.join().throwIfFailed();
-    return task.get();
-}
-
 // Bad — close() not reached if readLine() throws; resource leaks (Sonar S2095)
 BufferedReader reader = new BufferedReader(new FileReader(path));
 String line = reader.readLine();
 reader.close();
 ```
-
-For resources that are externally limited (e.g., database connections with a fixed pool size),
-use a `Semaphore` to throttle concurrent virtual threads rather than a fixed thread pool.
-
-```java
-// Good — semaphore limits concurrent DB access without capping virtual thread count
-private static final Semaphore DB_PERMITS = new Semaphore(20);
-
-Response query(String sql) throws InterruptedException {
-    DB_PERMITS.acquire();
-    try {
-        return db.execute(sql);
-    } finally {
-        DB_PERMITS.release();
-    }
-}
 ```
 
 ---
@@ -1497,7 +1367,6 @@ module com.example.orders {
 | :--- | :--- | :--- |
 | `System.currentTimeMillis()` | Non-deterministic | Pass `Instant` as an argument |
 | `Optional.get()` | Throws exception | Use `orElseThrow()` or `map()` |
-| `synchronized` | Pins Virtual Threads | Use `ReentrantLock` |
 | Deep Recursion | Stack Overflow | Use `Stream.iterate()` or Trampoline |
 | `default` in sealed switch | Hides missing cases | Remove `default` to let compiler check |
 ---
@@ -1507,14 +1376,11 @@ module com.example.orders {
 ### 1. Profile Before Optimizing
 Use **Java Flight Recorder (JFR)** and **JMH** (Java Microbenchmark Harness). Never rely on `System.currentTimeMillis()` for benchmarks (*Effective Java, Item 67*).
 
-### 2. Virtual Threads
-For I/O-bound services, scale using Virtual Threads. Do not pool them. Use a `Semaphore` to throttle concurrent access to limited resources (e.g., database connections).
-
-### 3. Primitive Streams
+### 2. Primitive Streams
 Prefer `IntStream`, `LongStream`, and `DoubleStream` for large numeric collections to avoid boxing overhead.
 - **Primitive Pattern Matching (JDK 25)**: Dispatch directly on primitives in `switch` statements to avoid `Integer`/`Long` autoboxing.
 
-### 4. Lazy Evaluation vs Eager Evaluation
+### 3. Lazy Evaluation vs Eager Evaluation
 
 Streams are **lazy by default** — intermediate operations (`map`, `filter`) do not execute until a terminal operation (`toList`, `reduce`, `forEach`) is invoked. This avoids processing elements that aren't needed.
 
@@ -1540,7 +1406,7 @@ if (needsReport) {
 
 > **Rule**: Always use lazy terminal operations (`findFirst`, `findAny`, `anyMatch`) when you don't need the entire result set. Use `Supplier<T>` for deferred scalar computations.
 
-### 5. Memory Overhead: Streams vs Imperative Loops
+### 4. Memory Overhead: Streams vs Imperative Loops
 
 Streams introduce object overhead (pipeline objects, lambda instances, spliterators). For **small collections** or **tight inner loops**, the overhead is measurable. For **large collections** or **complex transformations**, Streams are comparable or better due to JIT optimization.
 
@@ -1565,7 +1431,7 @@ for (User u : users) {
 // Switch to imperative ONLY if JMH profiling shows measurable overhead in a hot path.
 ```
 
-### 6. Garbage Collection Pressure from Lambdas and Closures
+### 5. Garbage Collection Pressure from Lambdas and Closures
 
 Lambdas that **capture local variables** (closures) create a new object instance on each invocation, increasing GC pressure. Non-capturing lambdas and method references are cached by the JVM as singletons.
 
@@ -1587,7 +1453,7 @@ private static final Predicate<Order> HIGH_VALUE =
 
 > **Rule**: In hot loops or high-throughput paths, extract capturing lambdas into `static final` fields or method references. Profile with JFR to identify excessive short-lived object allocation.
 
-### 7. String Concatenation
+### 6. String Concatenation
 Prefer `StringBuilder` or `StringJoiner` inside loops. For simple expressions, the `+` operator is optimized by `StringConcatFactory`.
 
 ---
@@ -1600,8 +1466,6 @@ Test pure functions in isolation — they require no mocks and no setup (*Functi
 - Use **AssertJ** for fluent assertions (`assertThat(x).isEqualTo(y)`).
 - Follow **Arrange-Act-Assert (AAA)** structure.
 - Use **Mockito** ONLY at integration boundaries (Repositories, HTTP clients). Do not mock pure domain records.
-- **Testing Structured Concurrency (JDK 25)**: Test `StructuredTaskScope` fan-out by using real Virtual Threads and lightweight stubs. Do not mock the scope itself.
-
 #### Good Example - Parameterized Pure Function Test
 ```java
 class DiscountTest {
