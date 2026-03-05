@@ -36,40 +36,40 @@ ${INCLUDE_TEST_PATTERNS=true|false}
 ## Generated Prompt
 
 ```
-"Analyze the codebase and document ${WORKFLOW_COUNT} representative end-to-end workflows 
+"Analyze the codebase and document ${WORKFLOW_COUNT} representative end-to-end workflows
 that can serve as implementation templates for similar features. Use the following approach:
 ```
 
 ### Initial Detection Phase
 
 ```
-${PROJECT_TYPE == "Auto-detect" ? 
+${PROJECT_TYPE == "Auto-detect" ?
   "Begin by examining the codebase structure to identify technologies:
    - Check for .NET solutions/projects, Spring configurations, Node.js/Express files, etc.
    - Identify the primary programming language(s) and frameworks in use
-   - Determine the architectural patterns based on folder structure and key components" 
+   - Determine the architectural patterns based on folder structure and key components"
   : "Focus on ${PROJECT_TYPE} patterns and conventions"}
 ```
 
 ```
-${ENTRY_POINT == "Auto-detect" ? 
+${ENTRY_POINT == "Auto-detect" ?
   "Identify typical entry points by looking for:
    - API controllers or route definitions
    - GraphQL resolvers
    - UI components that initiate network requests
    - Message handlers or event subscribers
-   - Scheduled job definitions" 
+   - Scheduled job definitions"
   : "Focus on ${ENTRY_POINT} entry points"}
 ```
 
 ```
-${PERSISTENCE_TYPE == "Auto-detect" ? 
+${PERSISTENCE_TYPE == "Auto-detect" ?
   "Determine persistence mechanisms by examining:
    - Database context/connection configurations
    - Repository implementations
    - ORM mappings
    - External API clients
-   - File system interactions" 
+   - File system interactions"
   : "Focus on ${PERSISTENCE_TYPE} interactions"}
 ```
 
@@ -87,7 +87,7 @@ For each of the `${WORKFLOW_COUNT}` most representative workflow(s) in the syste
 
 **API Entry Points:**
 ```
-${ENTRY_POINT == "API" || ENTRY_POINT == "Auto-detect" ? 
+${ENTRY_POINT == "API" || ENTRY_POINT == "Auto-detect" ?
   "- Document the API controller class and method that receives the request
    - Show the complete method signature including attributes/annotations
    - Include the full request DTO/model class definition
@@ -97,7 +97,7 @@ ${ENTRY_POINT == "API" || ENTRY_POINT == "Auto-detect" ?
 
 **GraphQL Entry Points:**
 ```
-${ENTRY_POINT == "GraphQL" || ENTRY_POINT == "Auto-detect" ? 
+${ENTRY_POINT == "GraphQL" || ENTRY_POINT == "Auto-detect" ?
   "- Document the GraphQL resolver class and method
    - Show the complete schema definition for the query/mutation
    - Include input type definitions
@@ -106,7 +106,7 @@ ${ENTRY_POINT == "GraphQL" || ENTRY_POINT == "Auto-detect" ?
 
 **Frontend Entry Points:**
 ```
-${ENTRY_POINT == "Frontend" || ENTRY_POINT == "Auto-detect" ? 
+${ENTRY_POINT == "Frontend" || ENTRY_POINT == "Auto-detect" ?
   "- Document the component that initiates the API call
    - Show the event handler that triggers the request
    - Include the API client service method
@@ -115,7 +115,7 @@ ${ENTRY_POINT == "Frontend" || ENTRY_POINT == "Auto-detect" ?
 
 **Message Consumer Entry Points:**
 ```
-${ENTRY_POINT == "Message Consumer" || ENTRY_POINT == "Auto-detect" ? 
+${ENTRY_POINT == "Message Consumer" || ENTRY_POINT == "Auto-detect" ?
   "- Document the message handler class and method
    - Show message subscription configuration
    - Include the complete message model definition
@@ -131,13 +131,13 @@ ${ENTRY_POINT == "Message Consumer" || ENTRY_POINT == "Auto-detect" ?
 
 **CQRS Patterns:**
 ```
-${ARCHITECTURE_PATTERN == "CQRS" || ARCHITECTURE_PATTERN == "Auto-detect" ? 
+${ARCHITECTURE_PATTERN == "CQRS" || ARCHITECTURE_PATTERN == "Auto-detect" ?
   "- Include complete command/query handler implementations" : ""}
 ```
 
 **Clean Architecture Patterns:**
 ```
-${ARCHITECTURE_PATTERN == "Clean" || ARCHITECTURE_PATTERN == "Auto-detect" ? 
+${ARCHITECTURE_PATTERN == "Clean" || ARCHITECTURE_PATTERN == "Auto-detect" ?
   "- Show use case/interactor implementations" : ""}
 ```
 
@@ -156,14 +156,14 @@ ${ARCHITECTURE_PATTERN == "Clean" || ARCHITECTURE_PATTERN == "Auto-detect" ?
 
 **SQL Database Patterns:**
 ```
-${PERSISTENCE_TYPE == "SQL Database" || PERSISTENCE_TYPE == "Auto-detect" ? 
+${PERSISTENCE_TYPE == "SQL Database" || PERSISTENCE_TYPE == "Auto-detect" ?
   "- Include ORM configurations, annotations, or Fluent API usage
    - Show actual SQL queries or ORM statements" : ""}
 ```
 
 **NoSQL Database Patterns:**
 ```
-${PERSISTENCE_TYPE == "NoSQL Database" || PERSISTENCE_TYPE == "Auto-detect" ? 
+${PERSISTENCE_TYPE == "NoSQL Database" || PERSISTENCE_TYPE == "Auto-detect" ?
   "- Show document structure definitions
    - Include document query/update operations" : ""}
 ```
@@ -191,7 +191,7 @@ ${PERSISTENCE_TYPE == "NoSQL Database" || PERSISTENCE_TYPE == "Auto-detect" ?
 
 **Testing Approach (Optional):**
 ```
-${INCLUDE_TEST_PATTERNS ? 
+${INCLUDE_TEST_PATTERNS ?
   "9. **Testing Approach**
      - Document unit test implementations for each layer
      - Show mocking patterns and test fixture setup
@@ -202,7 +202,7 @@ ${INCLUDE_TEST_PATTERNS ?
 
 **Sequence Diagram (Optional):**
 ```
-${INCLUDE_SEQUENCE_DIAGRAM ? 
+${INCLUDE_SEQUENCE_DIAGRAM ?
   "10. **Sequence Diagram**
       - Generate a detailed sequence diagram showing all components
       - Include method calls with parameter types
@@ -232,7 +232,7 @@ Provide reusable code templates for:
 
 **.NET Implementation Patterns (if detected):**
 ```
-${PROJECT_TYPE == ".NET" || PROJECT_TYPE == "Auto-detect" ? 
+${PROJECT_TYPE == ".NET" || PROJECT_TYPE == "Auto-detect" ?
   "- Complete controller class with attributes, filters, and dependency injection
    - Service registration in Startup.cs or Program.cs
    - Entity Framework DbContext configuration
@@ -247,7 +247,7 @@ ${PROJECT_TYPE == ".NET" || PROJECT_TYPE == "Auto-detect" ?
 
 **Spring Implementation Patterns (if detected):**
 ```
-${PROJECT_TYPE == "Java" || PROJECT_TYPE == "Spring" || PROJECT_TYPE == "Auto-detect" ? 
+${PROJECT_TYPE == "Java" || PROJECT_TYPE == "Spring" || PROJECT_TYPE == "Auto-detect" ?
   "- Complete controller class with annotations and dependency injection
    - Service implementation with transaction boundaries
    - Repository interface and implementation
@@ -260,7 +260,7 @@ ${PROJECT_TYPE == "Java" || PROJECT_TYPE == "Spring" || PROJECT_TYPE == "Auto-de
 
 **React Implementation Patterns (if detected):**
 ```
-${PROJECT_TYPE == "React" || PROJECT_TYPE == "Auto-detect" ? 
+${PROJECT_TYPE == "React" || PROJECT_TYPE == "Auto-detect" ?
   "- Component structure with props and state
    - Hook implementation patterns (useState, useEffect, custom hooks)
    - API service implementation
@@ -289,5 +289,28 @@ Based on the documented workflows, provide specific guidance for implementing ne
 - Explain configuration-driven feature patterns
 
 **Conclusion:**
-Conclude with a summary of the most important patterns that should be followed when 
+Conclude with a summary of the most important patterns that should be followed when
 implementing new features to maintain consistency with the codebase."
+
+## Blueprint Maintenance & Versioning
+
+### Keeping the Blueprint Up to Date
+- Review and update this document whenever workflows, architecture, or technology stacks change significantly.
+- Record the date and author of each update in a changelog section at the end of the workflow documentation.
+- Encourage team members to suggest improvements or corrections as the codebase evolves.
+- For automated projects, consider integrating workflow validation tools that can flag drift from the documented blueprints.
+
+### Versioning
+- Use semantic versioning for the workflow documentation (e.g., v1.0.0, v1.1.0) and increment the version with each major or minor change.
+- Optionally, keep previous versions of the workflow documentation in a /docs/history or /workflows/ folder for reference.
+
+### Review and Accuracy
+- After generating or updating the workflow documentation, review the output for accuracy, relevance, and conciseness.
+- For ambiguous or custom workflows, supplement the generated output with manual notes or clarifications.
+
+### Fallback and Error Handling
+- If no representative workflows are found for a category, output a clear message indicating this and suggest areas for improvement or files to review.
+- If codebase scanning is ambiguous or incomplete, prompt the user for clarification or additional context before proceeding.
+
+---
+*Last updated: [YYYY-MM-DD] by [Author/Tool]*

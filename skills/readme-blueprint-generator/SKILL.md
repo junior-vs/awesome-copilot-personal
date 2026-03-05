@@ -76,3 +76,26 @@ Format the README with proper Markdown, including:
 - Badges for build status, version, etc. if information is available
 
 Keep the README concise yet informative, focusing on what new developers or users would need to know about the project.
+
+## Blueprint Maintenance & Versioning
+
+### Keeping the Blueprint Up to Date
+- Review and update this README generation prompt whenever documentation structure, project standards, or technology stacks change significantly.
+- Record the date and author of each update in a changelog section at the end of the README or in a dedicated changelog file.
+- Encourage team members to suggest improvements or corrections as the project evolves.
+- For automated projects, consider integrating documentation validation tools that can flag drift from the documented standards.
+
+### Versioning
+- Use semantic versioning for the README or documentation blueprint (e.g., v1.0.0, v1.1.0) and increment the version with each major or minor change.
+- Optionally, keep previous versions of the README in a /docs/history or /readmes/ folder for reference.
+
+### Review and Accuracy
+- After generating or updating the README, review the output for accuracy, relevance, and conciseness.
+- For ambiguous or custom documentation, supplement the generated output with manual notes or clarifications.
+
+### Fallback and Error Handling
+- If key documentation files are missing or incomplete, output a clear message indicating this and suggest areas for improvement or files to review.
+- If scanning is ambiguous or incomplete, prompt the user for clarification or additional context before proceeding.
+
+---
+*Last updated: [YYYY-MM-DD] by [Author/Tool]*

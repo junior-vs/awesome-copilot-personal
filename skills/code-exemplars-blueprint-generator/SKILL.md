@@ -75,17 +75,17 @@ ${PROJECT_TYPE == "Python" || PROJECT_TYPE == "Auto-detect" ? `#### Python Exemp
   - User interface components
   - Controllers/API endpoints
   - View models/DTOs
-  
+
 - **Business Logic Layer**:
   - Service implementations
   - Business logic components
   - Workflow orchestration
-  
+
 - **Data Access Layer**:
   - Repository implementations
   - Data models
   - Query patterns
-  
+
 - **Cross-Cutting Concerns**:
   - Logging implementations
   - Error handling
@@ -120,6 +120,28 @@ Create exemplars.md with:
 The document should be actionable for developers needing guidance on implementing new features consistent with existing patterns.
 
 Important: Only include actual files from the codebase. Verify all file paths exist. Do not include placeholder or hypothetical examples.
+## Blueprint Maintenance & Versioning
+
+### Keeping the Blueprint Up to Date
+- Review and update this document whenever coding standards, patterns, or technology stacks change significantly.
+- Record the date and author of each update in a changelog section at the end of exemplars.md.
+- Encourage team members to suggest improvements or corrections as the codebase evolves.
+- For automated projects, consider integrating code scanning tools that can flag drift from the documented exemplars.
+
+### Versioning
+- Use semantic versioning for the exemplars.md document (e.g., v1.0.0, v1.1.0) and increment the version with each major or minor change.
+- Optionally, keep previous versions of the exemplars in a /docs/history or /exemplars/ folder for reference.
+
+### Review and Accuracy
+- After generating or updating exemplars.md, review the output for accuracy, relevance, and conciseness.
+- For ambiguous or custom patterns, supplement the generated output with manual notes or clarifications.
+
+### Fallback and Error Handling
+- If no high-quality exemplars are found for a category, output a clear message indicating this and suggest areas for improvement or files to review.
+- If codebase scanning is ambiguous or incomplete, prompt the user for clarification or additional context before proceeding.
+
+---
+*Last updated: [YYYY-MM-DD] by [Author/Tool]*
 "
 
 ## Expected Output
