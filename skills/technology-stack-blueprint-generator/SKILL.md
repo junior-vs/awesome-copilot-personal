@@ -77,7 +77,7 @@ ${PROJECT_TYPE == "Python" || PROJECT_TYPE == "Auto-detect" ? "#### Python Analy
 - API design patterns" : ""}
 
 ### 3. Implementation Patterns & Conventions
-${INCLUDE_CONVENTIONS ? 
+${INCLUDE_CONVENTIONS ?
 "Document coding conventions and patterns for each technology area:
 
 #### Naming Conventions
@@ -102,7 +102,7 @@ ${INCLUDE_CONVENTIONS ?
 - Testing patterns" : ""}
 
 ### 4. Usage Examples
-${INCLUDE_USAGE_PATTERNS ? 
+${INCLUDE_USAGE_PATTERNS ?
 "Extract representative code examples showing standard implementation patterns:
 
 #### API Implementation Examples
@@ -131,7 +131,7 @@ ${INCLUDE_USAGE_PATTERNS ?
 - API integration pattern" : ""}
 
 ### 5. Technology Stack Map
-${DEPTH_LEVEL == "Comprehensive" || DEPTH_LEVEL == "Implementation-Ready" ? 
+${DEPTH_LEVEL == "Comprehensive" || DEPTH_LEVEL == "Implementation-Ready" ?
 "Create a comprehensive technology map including:
 
 #### Core Framework Usage
@@ -160,60 +160,60 @@ ${DEPTH_LEVEL == "Comprehensive" || DEPTH_LEVEL == "Implementation-Ready" ?
 
 ### 6. Technology-Specific Implementation Details
 
-${PROJECT_TYPE == ".NET" || PROJECT_TYPE == "Auto-detect" ? 
+${PROJECT_TYPE == ".NET" || PROJECT_TYPE == "Auto-detect" ?
 "#### .NET Implementation Details (if detected)
 - **Dependency Injection Pattern**:
   - Service registration approach (Scoped/Singleton/Transient patterns)
   - Configuration binding patterns
-  
+
 - **Controller Patterns**:
   - Base controller usage
   - Action result types and patterns
   - Route attribute conventions
   - Filter usage (authorization, validation, etc.)
-  
+
 - **Data Access Patterns**:
   - ORM configuration and usage
   - Entity configuration approach
   - Relationship definitions
   - Query patterns and optimization approaches
-  
+
 - **API Design Patterns** (if used):
   - Endpoint organization
   - Parameter binding approaches
   - Response type handling
-  
+
 - **Language Features Used**:
   - Detect specific language features from code
   - Identify common patterns and idioms
   - Note any specific version-dependent features" : ""}
 
-${PROJECT_TYPE == "React.js" || PROJECT_TYPE == "Auto-detect" ? 
+${PROJECT_TYPE == "React.js" || PROJECT_TYPE == "Auto-detect" ?
 "#### React Implementation Details (if detected)
 - **Component Structure**:
   - Function vs class components
   - Props interface definitions
   - Component composition patterns
-  
+
 - **Hook Usage Patterns**:
   - Custom hook implementation style
   - useState patterns
   - useEffect cleanup approaches
   - Context usage patterns
-  
+
 - **State Management**:
   - Local vs global state decisions
   - State management library patterns
   - Store configuration
   - Selector patterns
-  
+
 - **Styling Approach**:
   - CSS methodology (CSS modules, styled-components, etc.)
   - Theme implementation
   - Responsive design patterns" : ""}
 
 ### 7. Blueprint for New Code Implementation
-${DEPTH_LEVEL == "Implementation-Ready" ? 
+${DEPTH_LEVEL == "Implementation-Ready" ?
 "Based on the analysis, provide a detailed blueprint for implementing new features:
 
 - **File/Class Templates**: Standard structure for common component types
@@ -223,7 +223,7 @@ ${DEPTH_LEVEL == "Implementation-Ready" ?
 - **Testing Requirements**: Standard test patterns for different component types
 - **Documentation Requirements**: Standard doc patterns for new features" : ""}
 
-${INCLUDE_DIAGRAMS ? 
+${INCLUDE_DIAGRAMS ?
 "### 8. Technology Relationship Diagrams
 - **Stack Diagram**: Visual representation of the complete technology stack
 - **Dependency Flow**: How different technologies interact
@@ -239,4 +239,26 @@ ${INCLUDE_DIAGRAMS ?
 Format the output as ${OUTPUT_FORMAT} and categorize technologies by ${CATEGORIZATION}.
 
 Save the output as 'Technology_Stack_Blueprint.${OUTPUT_FORMAT == "Markdown" ? "md" : OUTPUT_FORMAT.toLowerCase()}'
+## Blueprint Maintenance & Versioning
+
+### Keeping the Blueprint Up to Date
+- Review and update this technology stack blueprint prompt whenever technology, architecture, or tooling changes significantly.
+- Record the date and author of each update in a changelog section at the end of the blueprint or in a dedicated changelog file.
+- Encourage team members to suggest improvements or corrections as the project evolves.
+- For automated projects, consider integrating stack validation tools that can flag drift from the documented blueprint.
+
+### Versioning
+- Use semantic versioning for the technology stack blueprint (e.g., v1.0.0, v1.1.0) and increment the version with each major or minor change.
+- Optionally, keep previous versions of the blueprint in a /docs/history or /techstacks/ folder for reference.
+
+### Review and Accuracy
+- After generating or updating the technology stack blueprint, review the output for accuracy, relevance, and conciseness.
+- For ambiguous or custom stacks, supplement the generated output with manual notes or clarifications.
+
+### Fallback and Error Handling
+- If key technology or configuration files are missing or incomplete, output a clear message indicating this and suggest areas for improvement or files to review.
+- If scanning is ambiguous or incomplete, prompt the user for clarification or additional context before proceeding.
+
+---
+*Last updated: [YYYY-MM-DD] by [Author/Tool]*
 "
