@@ -3,14 +3,15 @@ title: 'Understanding Copilot Context'
 description: 'Learn how GitHub Copilot uses context from your code, workspace, and conversation to generate relevant suggestions.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2025-11-28
-estimatedReadingTime: '8 minutes'
+lastUpdated: 2026-09-09
+estimatedReadingTime: '10 minutes'
 tags:
   - context
   - fundamentals
   - how-it-works
 relatedArticles:
   - ./what-are-agents-skills-instructions.md
+  - ./copilot-configuration-basics.md
 ---
 
 Context is the foundation of how GitHub Copilot generates relevant, accurate suggestions. Understanding what Copilot "sees" and how it uses that information helps you write better prompts, get higher-quality completions, and work more effectively with AI assistance. This article explains the types of context Copilot uses and how to optimize your development environment for better results.
@@ -124,6 +125,47 @@ GitHub Copilot has a maximum token limit for how much context it can process at 
 
 Understanding this prioritization helps you optimize which files to keep open and when to use explicit references.
 
+### Context Tiers (Copilot CLI, v1.0.70+)
+
+In Copilot CLI you can control how much context is included per session using the **context tier** setting. Two tiers are available:
+
+| Tier | Description |
+|------|-------------|
+| `default` | Standard context included — balances speed and thoroughness |
+| `full` | Larger context window — pulls in more of the codebase for each request |
+
+Set the tier for a single session at startup, or pin it for an entire repository via `.github/copilot/settings.json` (see [Copilot Configuration Basics](../copilot-configuration-basics/)):
+
+```json
+{
+  "contextTier": "full"
+}
+```
+
+Use `full` tier on larger codebases where you want Copilot to consider more code before responding — at the cost of slightly slower responses and higher token consumption.
+
+### Monitoring Context Window Usage
+
+In Copilot CLI you can inspect how much of the context window is occupied at any point using the `/context` command:
+
+```
+/context
+```
+
+This displays a visualization of token usage and remaining headroom. When the context window is nearly full, use `/compact` to summarize the conversation history and free up space without starting a new session — skills remain active after compaction:
+
+```
+/compact
+```
+
+The `/usage` command shows total session metrics including token counts and per-model breakdowns (v1.0.64+):
+
+```
+/usage
+```
+
+These tools help you make conscious trade-offs: compact when context is tight, or start fresh with `/clear` for a clean slate.
+
 ## Context Best Practices
 
 Maximize GitHub Copilot's effectiveness by providing clear, relevant context:
@@ -157,6 +199,8 @@ A: Yes, you have several ways to control context:
 - Use `#` mentions to explicitly reference specific files, symbols or functions
 - Configure `.gitignore` to exclude files from workspace context
 - Use instructions and skills to provide persistent context for specific scenarios
+- In Copilot CLI, use the **context tier** setting (`default` or `full`) to control how much of the codebase is pulled in per request (v1.0.70+)
+- Use `/compact` in Copilot CLI to summarize conversation history when the context window fills up
 
 **Q: Does closing a file remove it from context?**
 
@@ -167,6 +211,6 @@ A: Yes, closing a file can remove it from Copilot's active context. However, fil
 Now that you understand how context works in GitHub Copilot, explore these related topics:
 
 - **[What are Agents, Skills, and Instructions](../what-are-agents-skills-instructions/)** - Learn about customization types that provide persistent context
-- **[Copilot Configuration Basics](../copilot-configuration-basics/)** - Configure settings to optimize context usage
+- **[Copilot Configuration Basics](../copilot-configuration-basics/)** - Configure settings to optimize context usage, including context tier pinning
 - **[Creating Effective Skills](../creating-effective-skills/)** - Use context effectively in your skills
 - **Common Pitfalls and Solutions** _(coming soon)_ - Avoid context-related mistakes
