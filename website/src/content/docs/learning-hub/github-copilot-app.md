@@ -3,7 +3,7 @@ title: 'Getting Started with the GitHub Copilot app'
 description: 'Learn about the GitHub Copilot app, a desktop experience built for agent-native development. Understand its key features and who it''s for.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-09-02
+lastUpdated: 2026-09-11
 estimatedReadingTime: '8 minutes'
 tags:
   - copilot-app
@@ -104,6 +104,8 @@ This makes Customize a good starting point if you want to extend the app's capab
 You control the automation level—decide whether Agent Merge should just run CI, address feedback, or go all the way to merging. It's a way to let Copilot handle the tedious parts of the review and merge process.
 
 Agent Merge also understands **stacked pull requests**: it shows a stack summary in the merge drawer with the pull requests that will be included, and lets you merge an entire stack together instead of merging each PR one at a time.
+
+> **Now in VS Code too**: Agent Merge is also available as a Preview feature in **VS Code 1.136+** (`chat.agentMerge.enabled`). The VS Code implementation adds autonomous feedback addressing, failed check fixing, and merge conflict resolution — repeating the loop until the PR is ready to merge.
 
 ### Requesting Code Reviews
 

@@ -3,7 +3,7 @@ title: 'Understanding Copilot Context'
 description: 'Learn how GitHub Copilot uses context from your code, workspace, and conversation to generate relevant suggestions.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2025-11-28
+lastUpdated: 2026-09-11
 estimatedReadingTime: '8 minutes'
 tags:
   - context
@@ -28,6 +28,8 @@ When GitHub Copilot generates a suggestion or responds to a chat message, it ana
 **Chat Conversation History**: In GitHub Copilot Chat, previous messages in your conversation provide context for follow-up questions. This allows for natural, iterative problem-solving where each response builds on earlier exchanges.
 
 **Workspace Structure**: The organization of your project—directory structure, configuration files, and patterns—helps Copilot understand the type of project you're working on and follow appropriate conventions.
+
+**GitHub Issues and Pull Requests**: In VS Code 1.137+ and the GitHub Copilot app, you can attach GitHub issues and pull requests directly as context. In the chat input, select **Add Context...** → search for an issue or PR, or simply paste a GitHub URL and Copilot will auto-create the attachment. This brings the full issue description, comments, and PR diff into the conversation—useful for asking Copilot to implement, review, or debug work directly from a ticket.
 
 ## Types of Context
 
