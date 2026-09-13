@@ -3,7 +3,7 @@ title: 'Installing and Using Plugins'
 description: 'Learn how to find, install, and manage plugins that extend GitHub Copilot CLI with reusable agents, skills, hooks, and integrations.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-09-01
+lastUpdated: 2026-09-13
 relatedArticles:
   - ./building-custom-agents.md
   - ./creating-effective-skills.md
@@ -254,6 +254,21 @@ This opens an interactive list where each installed plugin and its components ar
 > **Note**: Enabling and disabling hooks and LSP servers individually is temporarily unavailable following the `/plugins` removal — those toggles previously lived only in the retired dashboard.
 
 > **Dashboard available to everyone (v1.0.81+)**: The plugins dashboard (`/plugin`, `/mcp`, and `/skills`) is now on for all users by default. If you need to opt out, set `PLUGINS_DASHBOARD=false`, which also restores the legacy `copilot plugins` command. This opt-out was later removed in the same release, along with the legacy skills picker it kept alive — `/skills`, bare `/mcp`, and `/mcp show` (with no server name) always open the dashboard now, and `/mcp config` opens the dedicated MCP wizard.
+
+**CLI enable/disable subcommands (v1.0.84+)**: You can now enable or disable plugins, MCP servers, and skills directly from your shell without opening an interactive session:
+
+```bash
+copilot plugin enable my-plugin      # enable a plugin
+copilot plugin disable my-plugin     # disable without uninstalling
+
+copilot mcp enable postgres          # enable an MCP server
+copilot mcp disable postgres         # disable without removing config
+
+copilot skill enable my-skill        # enable a skill
+copilot skill disable my-skill       # disable a skill
+```
+
+These replace the retired `copilot plugins enable/disable --plugin|--mcp|--skill` flags. Disabled components are hidden from Copilot but remain on disk — re-enable them at any time with the same commands.
 
 ### Loading Plugins from a Local Directory
 
