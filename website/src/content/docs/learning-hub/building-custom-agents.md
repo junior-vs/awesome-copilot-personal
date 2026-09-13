@@ -3,7 +3,7 @@ title: 'Building Custom Agents'
 description: 'Learn how to create specialized GitHub Copilot agents with custom personas, tool integrations, and domain expertise.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-09-05
+lastUpdated: 2026-09-12
 estimatedReadingTime: '10 minutes'
 tags:
   - agents
@@ -293,6 +293,8 @@ Keep agents focused—one persona per file. If you find an agent trying to do to
 A: In VS Code, open Copilot Chat and use the agent picker dropdown at the top of the chat panel. Your custom agents appear alongside built-in options. You can also `@mention` an agent by name.
 
 In Copilot CLI, custom agents are discoverable via the agent picker inside a session. Clients that integrate with Copilot CLI using the **Agent Coordination Protocol (ACP)** can also list available custom agents and switch between them programmatically via the `agent` session configuration option (v1.0.40+). This allows tools like Zed, Neovim plugins, and CI pipelines driving Copilot via ACP to surface the agent picker and switch agents without requiring a slash command. ACP clients also receive the agent's **live plan** as it works through multi-step tasks (v1.0.40+), so they can display real-time progress to their users without waiting for each turn to complete.
+
+**Plugin-contributed agents** *(v1.0.84+)*: Agents contributed by installed plugins are now fully discoverable and selectable from the agent picker. Previously, plugin-contributed agents were registered but could not actually be selected and run — this is now fixed.
 
 **Q: Can agents use skills?**
 

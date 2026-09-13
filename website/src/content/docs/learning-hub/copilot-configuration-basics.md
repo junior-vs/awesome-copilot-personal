@@ -3,7 +3,7 @@ title: 'Copilot Configuration Basics'
 description: 'Learn how to configure GitHub Copilot at user, workspace, and repository levels to optimize your AI-assisted development experience.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-09-07
+lastUpdated: 2026-09-12
 estimatedReadingTime: '10 minutes'
 tags:
   - configuration
@@ -431,6 +431,7 @@ CLI settings use **camelCase** naming. Key settings added in recent releases:
 | `stayInAutopilot` | Keep the CLI in autopilot mode after an autopilot task completes, instead of returning to interactive mode (v1.0.69+) |
 | `defaultMode` | Startup mode for new interactive sessions (e.g., `interactive`, `autopilot`, `plan`) (v1.0.81+) |
 | `defaultPermissionMode` | Default approval behaviour for new interactive sessions, independent from `defaultMode` (v1.0.81+) |
+| `editorMode` | Input editor mode for the composer; set to `vim` to enable Vim modal editing (v1.0.84+) |
 
 > **Note**: Older snake_case names (e.g., `include_gitignored`, `auto_updates_channel`) are still accepted for backward compatibility, but camelCase is now the preferred format.
 
@@ -457,7 +458,7 @@ The model picker opens in a **full-screen view** with inline reasoning effort ad
 
 **Auto mode and server-side model routing** (v1.0.43+): When you select **Auto** as your model, the CLI uses server-side model routing for real-time model selection. Instead of locking in a single model at session start, Auto mode evaluates each request and routes it to the most appropriate model dynamically. This means straightforward questions can be handled by a faster model while complex reasoning tasks are automatically escalated — without you needing to switch models manually.
 
-**Model family aliases** (v1.0.64+): Instead of typing a full model name, you can use short family aliases in the model setting: `opus`, `sonnet`, `haiku` (Anthropic), and `gpt`, `gemini` (Google/OpenAI). The CLI resolves the alias to the latest available model in that family. This is especially useful in scripts or configuration files where you want to track the best model in a family without hardcoding a version string. Recent models available include **Claude Opus 5** (v1.0.75+), the latest in Anthropic's Opus family for the most demanding tasks, **Grok 4.5** (v1.0.76+) from xAI, **Gemini 3.7 Flash** (v1.0.81+), and **Claude Fable 5.1** (v1.0.83+). **Grok 4.6** (v1.0.81+) also gains support for the `xhigh` reasoning effort level, one step above `high`, for the most demanding reasoning tasks. The `/model picker` also periodically retires older models no longer worth recommending — a recent cleanup removed several deprecated Claude and Gemini entries (v1.0.83+), so don't be surprised if a model you previously pinned disappears from the list.
+**Model family aliases** (v1.0.64+): Instead of typing a full model name, you can use short family aliases in the model setting: `opus`, `sonnet`, `haiku` (Anthropic), and `gpt`, `gemini` (Google/OpenAI). The CLI resolves the alias to the latest available model in that family. This is especially useful in scripts or configuration files where you want to track the best model in a family without hardcoding a version string. Recent models available include **Claude Opus 5** (v1.0.75+), the latest in Anthropic's Opus family for the most demanding tasks, **Grok 4.5** (v1.0.76+) from xAI, **Gemini 3.7 Flash** (v1.0.81+), **Claude Fable 5.1** (v1.0.83+), and **GPT-6 Astra** (v1.0.84+). **Grok 4.6** (v1.0.81+) also gains support for the `xhigh` reasoning effort level, one step above `high`, for the most demanding reasoning tasks. The `/model picker` also periodically retires older models no longer worth recommending — a recent cleanup removed several deprecated Claude and Gemini entries (v1.0.83+), so don't be surprised if a model you previously pinned disappears from the list.
 
 **Model fallback lists** *(v1.0.83+)*: Custom agents can set `model` to a list of several models instead of a single name. Copilot tries each one in order until it finds one available to your account — useful when your preferred model is temporarily rate-limited or not enrolled. Pair this with `model-policy: required` to keep the agent restricted to that list even if you try to switch models mid-session. See [Building Custom Agents](../building-custom-agents/) for the frontmatter syntax.
 
@@ -685,6 +686,20 @@ Use `/diagnose` when a session is behaving unexpectedly — it inspects session 
 
 **Voice dictation** *(v1.0.81+)*: Press **Ctrl+Space** to toggle voice dictation on or off, letting you speak a prompt instead of typing it.
 
+**Vim mode** *(v1.0.84+)*: Vim modal editing is now available to everyone. Toggle it on with `/vim` or by setting `editorMode` to `vim` in your config. The current mode (Normal / Insert) is shown while you type in the composer. Vim keybindings work in the composer for navigation, deletion, and paste operations — switch back to standard editing by setting `editorMode` to the default or toggling `/vim` off:
+
+```
+/vim                            # toggle Vim mode on or off
+```
+
+Or set it permanently in `~/.copilot-cli/config.json`:
+
+```json
+{
+  "editorMode": "vim"
+}
+```
+
 **Worktree switch reliability (v1.0.82+)**: If you start typing a new message while `/worktree` or `/move` is preparing a worktree switch, that message is no longer dropped when the switch completes.
 
 The `/ask` command lets you ask a quick question without affecting your conversation history. The current session context is preserved, so you can use it for one-off lookups without derailing an ongoing task. Responses are rendered as full markdown, including tables and formatted links:
@@ -713,7 +728,7 @@ The `/context` command shows a visualization of the current conversation's conte
 /context
 ```
 
-The `/usage` command displays session metrics such as the number of tokens consumed, API calls made, and any quota information for the current session. In v1.0.64+, `/usage` also shows per-model token totals when you have used multiple models in a session:
+The `/usage` command displays session metrics such as the number of tokens consumed, API calls made, and any quota information for the current session. In v1.0.64+, `/usage` also shows per-model token totals when you have used multiple models in a session. In v1.0.84+, `/usage` additionally shows **per-model AI Credit consumption** in usage breakdowns, making it easier to understand which models are consuming credits for usage-based billing:
 
 ```
 /usage
@@ -880,9 +895,39 @@ copilot --config-dir ~/.my-copilot-config
 
 Set `COPILOT_HOME` in your shell profile to use a custom config directory across all sessions. This is especially useful when running multiple Copilot configurations for different projects or teams.
 
+### CLI Subcommand Changes (v1.0.84+)
+
+Several commands were reorganized in v1.0.84 to make the CLI easier to navigate:
+
+| New command | Replaces |
+|---|---|
+| `copilot instruction list` | `copilot plugins list --kind instruction` |
+| `copilot lsp list` | `copilot plugins list --kind lsp` |
+| `copilot skill add [--project]` | `copilot plugins install --skill [--scope project]` |
+| `copilot plugin enable/disable` | `copilot plugins enable/disable --plugin` |
+| `copilot mcp enable/disable` | `copilot plugins enable/disable --mcp` |
+| `copilot skill enable/disable` | `copilot plugins enable/disable --skill` |
+
+These dedicated subcommands replace the overloaded `--kind`, `--scope`, and `--mcp`/`--skill` flags on the legacy `copilot plugins` command, which now operates only on plugins. `copilot plugin list`, `copilot plugin marketplace list`, and `copilot plugin marketplace browse` also gained a `--json` flag for machine-readable output.
+
+> **Note**: `copilot plugins list` is now an alias for `copilot plugin list` and reports only plugins — no longer MCP servers, skills, instructions, or LSP servers. Scripts reading `plugins.plugins` from the old cross-kind JSON output must be updated to use the new flat array format.
+
+### Session and Memory Import (v1.0.84+)
+
+The CLI can now import sessions and memory from a **semantic JSONL interchange format** using the new `copilot session import` and `copilot memory import` commands. This makes it possible to transfer conversation history or memory snapshots between machines or from other compatible tools:
+
+```bash
+copilot session import sessions.jsonl     # import sessions from a JSONL file
+copilot memory import memory.jsonl        # import memory entries from a JSONL file
+```
+
+Use these commands when migrating your Copilot setup to a new machine or sharing session context with teammates.
+
 ### Shell Completion
 
 The `copilot completion` subcommand generates a static shell completion script for subcommands, flags, and known option values. Once installed, pressing Tab auto-completes Copilot CLI commands in your terminal.
+
+> **Improved completions** *(v1.0.84+)*: Shell completions are now generated from the same grammar the CLI parses with, so `copilot <TAB>` offers root flags alongside subcommands and each subcommand offers only its own options — completions and actual parsing are always in sync.
 
 ```bash
 # Bash — add to ~/.bashrc
