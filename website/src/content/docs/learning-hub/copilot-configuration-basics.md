@@ -3,7 +3,7 @@ title: 'Copilot Configuration Basics'
 description: 'Learn how to configure GitHub Copilot at user, workspace, and repository levels to optimize your AI-assisted development experience.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-09-07
+lastUpdated: 2026-09-14
 estimatedReadingTime: '10 minutes'
 tags:
   - configuration
@@ -50,6 +50,8 @@ Repository settings live in your codebase (typically in `.github/` although some
 Organisation settings allow administrators to enforce Copilot policies across all repositories within an organization. These settings can include defining custom agents, creating globally applied instructions, enabling or disabling Copilot, managing billing, and setting usage limits. These policies may not be enforced in the IDE, depending on the IDE's support for organization-level settings, but will apply to Copilot usage on GitHub.com.
 
 **When to use**: For enforcing organization-wide policies, ensuring compliance, and providing shared resources across multiple repositories.
+
+> **Enterprise managed settings — `forceLoginOrgs` (v1.0.83+)**: Enterprise admins can pin sign-in to approved GitHub organizations using the `forceLoginOrgs` managed setting. When set, the CLI restricts authentication to the specified organization(s), preventing users from authenticating with personal accounts or accounts from other organizations. This is useful in regulated environments where corporate accounts must be used exclusively. The setting is distributed via your organization's MDM or managed configuration channel.
 
 ### Configuration Precedence
 
@@ -191,6 +193,8 @@ my-monorepo/
 ```
 
 When you work inside `packages/api/`, Copilot loads configuration from `packages/api/.github/`, then `packages/.github/` (if it exists), then the root `.github/`. This layered discovery ensures the right context is active no matter where in the repository you're working.
+
+> **Large monorepo search (v1.0.79+)**: In very large repositories, Copilot CLI now uses [**tgrep**](https://github.com/microsoft/tgrep) — a trigram-indexed grep tool — instead of ripgrep for code search. tgrep builds an index on first use and delivers significantly faster regex searches across millions of files, without requiring ripgrep to scan every file from scratch on every query.
 
 ### Personal Skills Directory
 
@@ -432,6 +436,8 @@ CLI settings use **camelCase** naming. Key settings added in recent releases:
 | `defaultMode` | Startup mode for new interactive sessions (e.g., `interactive`, `autopilot`, `plan`) (v1.0.81+) |
 | `defaultPermissionMode` | Default approval behaviour for new interactive sessions, independent from `defaultMode` (v1.0.81+) |
 
+> **HTTPS proxy mTLS client certificates (v1.0.83+)**: When your network requires mutual TLS authentication on the HTTPS proxy, the CLI now automatically picks up and presents client certificates from the system's certificate store or any path configured in your OS keychain. No additional configuration is required — if your machine is already configured for mTLS proxy authentication (for example via an MDM-managed certificate), Copilot CLI will use it transparently for both model API requests and web fetches.
+
 > **Note**: Older snake_case names (e.g., `include_gitignored`, `auto_updates_channel`) are still accepted for backward compatibility, but camelCase is now the preferred format.
 
 > **Session restore after a crash (v1.0.81+)**: If the CLI is interrupted unexpectedly — a crash or a machine restart — startup now offers to restore any sessions that were still open, so you don't have to reopen each terminal by hand.
@@ -456,6 +462,8 @@ The model picker opens in a **full-screen view** with inline reasoning effort ad
 **Session-scoped model selection** *(v1.0.79+)*: `/model` now changes the model for the **current session only** by default. Use `/config model` to set the default model for future sessions — previously `/model` changed both at once, which made it easy to accidentally change your global default while just trying something out in one session.
 
 **Auto mode and server-side model routing** (v1.0.43+): When you select **Auto** as your model, the CLI uses server-side model routing for real-time model selection. Instead of locking in a single model at session start, Auto mode evaluates each request and routes it to the most appropriate model dynamically. This means straightforward questions can be handled by a faster model while complex reasoning tasks are automatically escalated — without you needing to switch models manually.
+
+*(v1.0.81+)* Auto mode now **adapts model selection as your task evolves within a conversation**: if you start with exploratory questions and then ask the agent to implement a complex refactor, the model tier adjusts accordingly mid-session. You no longer need to manually switch models when the complexity of your work changes.
 
 **Model family aliases** (v1.0.64+): Instead of typing a full model name, you can use short family aliases in the model setting: `opus`, `sonnet`, `haiku` (Anthropic), and `gpt`, `gemini` (Google/OpenAI). The CLI resolves the alias to the latest available model in that family. This is especially useful in scripts or configuration files where you want to track the best model in a family without hardcoding a version string. Recent models available include **Claude Opus 5** (v1.0.75+), the latest in Anthropic's Opus family for the most demanding tasks, **Grok 4.5** (v1.0.76+) from xAI, **Gemini 3.7 Flash** (v1.0.81+), and **Claude Fable 5.1** (v1.0.83+). **Grok 4.6** (v1.0.81+) also gains support for the `xhigh` reasoning effort level, one step above `high`, for the most demanding reasoning tasks. The `/model picker` also periodically retires older models no longer worth recommending — a recent cleanup removed several deprecated Claude and Gemini entries (v1.0.83+), so don't be surprised if a model you previously pinned disappears from the list.
 
