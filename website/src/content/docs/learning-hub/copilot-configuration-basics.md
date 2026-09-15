@@ -3,7 +3,7 @@ title: 'Copilot Configuration Basics'
 description: 'Learn how to configure GitHub Copilot at user, workspace, and repository levels to optimize your AI-assisted development experience.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-09-07
+lastUpdated: 2026-09-15
 estimatedReadingTime: '10 minutes'
 tags:
   - configuration
@@ -191,6 +191,8 @@ my-monorepo/
 ```
 
 When you work inside `packages/api/`, Copilot loads configuration from `packages/api/.github/`, then `packages/.github/` (if it exists), then the root `.github/`. This layered discovery ensures the right context is active no matter where in the repository you're working.
+
+**Search performance in large monorepos** *(v1.0.79+)*: For large repositories where `ripgrep` would be slow, GitHub Copilot CLI now automatically uses [**tgrep** (trigram-indexed grep)](https://github.com/microsoft/tgrep) when available. Tgrep builds a trigram index over the repository to make regex searches dramatically faster. If you work in a very large monorepo and find that codebase searches feel slow, install `tgrep` and the CLI will pick it up automatically — no configuration required.
 
 ### Personal Skills Directory
 
@@ -438,6 +440,10 @@ CLI settings use **camelCase** naming. Key settings added in recent releases:
 
 > **Piping an auth token (v1.0.81+)**: Use `copilot login --with-token` to read an authentication token from stdin instead of going through the interactive browser or device-code flow — useful for scripted or containerized setups where a token is already available in the environment.
 
+> **Enterprise: pinning sign-in to approved organizations (v1.0.83+)**: Enterprise administrators can set `forceLoginOrgs` as a managed setting to require users to authenticate under a specific list of approved GitHub organizations. This prevents sign-in with personal or unaffiliated accounts, ensuring all CLI activity is scoped to enterprise-managed identities.
+
+> **Automatic HTTPS proxy mTLS client certificates (v1.0.83+)**: If your organization uses an HTTPS proxy that requires mutual TLS (mTLS) for client authentication, GitHub Copilot CLI now detects and uses the client certificate automatically for both model requests and outbound web calls — no manual certificate configuration required.
+
 In addition to the main config file, GitHub Copilot CLI reads two optional per-project files for repository-specific overrides:
 
 - `.claude/settings.json` — committed project settings
@@ -455,7 +461,7 @@ The model picker opens in a **full-screen view** with inline reasoning effort ad
 
 **Session-scoped model selection** *(v1.0.79+)*: `/model` now changes the model for the **current session only** by default. Use `/config model` to set the default model for future sessions — previously `/model` changed both at once, which made it easy to accidentally change your global default while just trying something out in one session.
 
-**Auto mode and server-side model routing** (v1.0.43+): When you select **Auto** as your model, the CLI uses server-side model routing for real-time model selection. Instead of locking in a single model at session start, Auto mode evaluates each request and routes it to the most appropriate model dynamically. This means straightforward questions can be handled by a faster model while complex reasoning tasks are automatically escalated — without you needing to switch models manually.
+**Auto mode and server-side model routing** (v1.0.43+): When you select **Auto** as your model, the CLI uses server-side model routing for real-time model selection. Instead of locking in a single model at session start, Auto mode evaluates each request and routes it to the most appropriate model dynamically. This means straightforward questions can be handled by a faster model while complex reasoning tasks are automatically escalated — without you needing to switch models manually. As of v1.0.81, Auto mode has become even more adaptive: model selection now **evolves during a conversation** as your task changes. If a session starts as simple Q&A and grows into deep multi-file reasoning, Auto mode adjusts model routing mid-session rather than committing to the initial choice.
 
 **Model family aliases** (v1.0.64+): Instead of typing a full model name, you can use short family aliases in the model setting: `opus`, `sonnet`, `haiku` (Anthropic), and `gpt`, `gemini` (Google/OpenAI). The CLI resolves the alias to the latest available model in that family. This is especially useful in scripts or configuration files where you want to track the best model in a family without hardcoding a version string. Recent models available include **Claude Opus 5** (v1.0.75+), the latest in Anthropic's Opus family for the most demanding tasks, **Grok 4.5** (v1.0.76+) from xAI, **Gemini 3.7 Flash** (v1.0.81+), and **Claude Fable 5.1** (v1.0.83+). **Grok 4.6** (v1.0.81+) also gains support for the `xhigh` reasoning effort level, one step above `high`, for the most demanding reasoning tasks. The `/model picker` also periodically retires older models no longer worth recommending — a recent cleanup removed several deprecated Claude and Gemini entries (v1.0.83+), so don't be surprised if a model you previously pinned disappears from the list.
 
