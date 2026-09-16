@@ -3,7 +3,7 @@ title: 'Installing and Using Plugins'
 description: 'Learn how to find, install, and manage plugins that extend GitHub Copilot CLI with reusable agents, skills, hooks, and integrations.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-09-01
+lastUpdated: 2026-09-16
 relatedArticles:
   - ./building-custom-agents.md
   - ./creating-effective-skills.md
@@ -251,9 +251,37 @@ This opens an interactive list where each installed plugin and its components ar
 
 *(v1.0.81+)* `/plugin` also flags installed plugins and marketplaces that have a newer version available upstream, and offers an **Update** action to pull the latest version directly from the dashboard.
 
-> **Note**: Enabling and disabling hooks and LSP servers individually is temporarily unavailable following the `/plugins` removal — those toggles previously lived only in the retired dashboard.
-
 > **Dashboard available to everyone (v1.0.81+)**: The plugins dashboard (`/plugin`, `/mcp`, and `/skills`) is now on for all users by default. If you need to opt out, set `PLUGINS_DASHBOARD=false`, which also restores the legacy `copilot plugins` command. This opt-out was later removed in the same release, along with the legacy skills picker it kept alive — `/skills`, bare `/mcp`, and `/mcp show` (with no server name) always open the dashboard now, and `/mcp config` opens the dedicated MCP wizard.
+
+**Non-interactive enable/disable *(v1.0.85+)***: You can enable or disable individual plugins, MCP servers, and skills directly from the command line without entering the interactive dashboard:
+
+```bash
+# Enable or disable a plugin
+copilot plugin enable my-plugin
+copilot plugin disable my-plugin
+
+# Enable or disable an MCP server
+copilot mcp enable my-server
+copilot mcp disable my-server
+
+# Enable or disable a skill
+copilot skill enable my-skill
+copilot skill disable my-skill
+```
+
+These non-interactive commands are useful in scripts or automated setup flows where you want to configure Copilot components without starting an interactive session.
+
+**Listing instructions and LSP servers *(v1.0.85+)***: Two new subcommands provide a focused view of specific component types without opening the full plugin dashboard:
+
+```bash
+# List all installed instruction files
+copilot instruction list
+
+# List all registered LSP servers
+copilot lsp list
+```
+
+These replace the removed `copilot plugins list --kind instruction` and `copilot plugins list --kind lsp` flags. Use them to quickly audit which instructions and language servers are active in your environment.
 
 ### Loading Plugins from a Local Directory
 
