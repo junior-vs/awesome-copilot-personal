@@ -3,7 +3,7 @@ title: 'Building Custom Agents'
 description: 'Learn how to create specialized GitHub Copilot agents with custom personas, tool integrations, and domain expertise.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-09-05
+lastUpdated: 2026-09-18
 estimatedReadingTime: '10 minutes'
 tags:
   - agents
@@ -83,6 +83,20 @@ tools: ['codebase', 'terminal', 'github']
 > tools: ['codebase', 'terminal', 'github']
 > ---
 > ```
+
+**include-custom-instructions** *(v1.0.86+)*: Set to `true` to opt this agent into loading repository instruction files (`AGENTS.md`, `copilot-instructions.md`, `CLAUDE.md`) automatically, in addition to the agent's own instructions. By default, custom agents do not load these files; this flag enables the same instruction-loading behavior used by the default agent:
+
+```yaml
+---
+name: 'Documentation Writer'
+description: 'Writes and updates documentation following project conventions'
+model: Claude Sonnet 4
+include-custom-instructions: true
+tools: ['codebase', 'edit']
+---
+```
+
+This is especially useful for agents that need to be aware of project-wide conventions (coding standards, architecture decisions) without repeating those instructions in every agent file.
 
 **reasoningEffort** *(v1.0.66+)*: Override the reasoning effort level for this agent. Accepted values are `low`, `medium`, and `high`. This lets you pin specific agents to a cost/quality tradeoff regardless of the user's global setting — for example, a quick code-formatting agent can use `low` effort, while a security reviewer uses `high`:
 

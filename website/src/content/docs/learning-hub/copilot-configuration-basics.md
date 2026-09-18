@@ -3,7 +3,7 @@ title: 'Copilot Configuration Basics'
 description: 'Learn how to configure GitHub Copilot at user, workspace, and repository levels to optimize your AI-assisted development experience.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-09-07
+lastUpdated: 2026-09-18
 estimatedReadingTime: '10 minutes'
 tags:
   - configuration
@@ -431,6 +431,8 @@ CLI settings use **camelCase** naming. Key settings added in recent releases:
 | `stayInAutopilot` | Keep the CLI in autopilot mode after an autopilot task completes, instead of returning to interactive mode (v1.0.69+) |
 | `defaultMode` | Startup mode for new interactive sessions (e.g., `interactive`, `autopilot`, `plan`) (v1.0.81+) |
 | `defaultPermissionMode` | Default approval behaviour for new interactive sessions, independent from `defaultMode` (v1.0.81+) |
+| `transcriptView` | Set to `"concise"` to group tool activity into expandable work summaries instead of showing every tool call inline (v1.0.85+) |
+| `editorMode` | Set to `"vim"` to enable Vim keybindings in the CLI input (v1.0.85, GA); can also be toggled with `/vim` |
 
 > **Note**: Older snake_case names (e.g., `include_gitignored`, `auto_updates_channel`) are still accepted for backward compatibility, but camelCase is now the preferred format.
 
@@ -884,6 +886,8 @@ Set `COPILOT_HOME` in your shell profile to use a custom config directory across
 
 The `copilot completion` subcommand generates a static shell completion script for subcommands, flags, and known option values. Once installed, pressing Tab auto-completes Copilot CLI commands in your terminal.
 
+> **Rewritten shell completions (v1.0.85+)**: Shell completion scripts are now generated from the same Rust grammar the CLI uses to parse commands, so completions stay in sync with new subcommands automatically and no longer need manual maintenance.
+
 ```bash
 # Bash — add to ~/.bashrc
 eval "$(copilot completion bash)"
@@ -903,6 +907,36 @@ echo 'source ~/.copilot-completion.bash' >> ~/.bashrc
 ```
 
 > **Tip**: Reload your shell (`source ~/.bashrc` or open a new terminal) after adding the completion script for changes to take effect.
+
+### Managing Instructions and LSPs
+
+*(v1.0.85+)* Two new subcommands replace the older `copilot plugins list --kind` syntax for listing loaded instructions and language servers:
+
+```bash
+copilot instruction list   # list all loaded instruction files (replaces copilot plugins list --kind instruction)
+copilot lsp list           # list configured LSP servers (replaces copilot plugins list --kind lsp)
+```
+
+### Managing Plugins, MCP Servers, and Skills
+
+*(v1.0.85+)* Dedicated `enable` and `disable` subcommands replace the older `copilot plugins enable/disable --plugin|--mcp|--skill` syntax:
+
+```bash
+# Plugins
+copilot plugin enable <name>
+copilot plugin disable <name>
+copilot plugin list --json        # JSON output (also available for marketplace list/browse)
+
+# MCP servers
+copilot mcp enable <name>
+copilot mcp disable <name>
+
+# Skills
+copilot skill enable <name>
+copilot skill disable <name>
+```
+
+The old `copilot plugins enable/disable --plugin|--mcp|--skill` flags continue to work for backward compatibility.
 
 ## Common Questions
 

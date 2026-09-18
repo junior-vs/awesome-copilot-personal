@@ -3,7 +3,7 @@ title: 'Using the Copilot Coding Agent'
 description: 'Learn how to use GitHub Copilot coding agent to autonomously work on issues, generate pull requests, and automate development tasks.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-05-13
+lastUpdated: 2026-09-18
 estimatedReadingTime: '12 minutes'
 tags:
   - coding-agent
@@ -65,6 +65,12 @@ steps:
   - name: Verify tests pass
     run: npm test
 ```
+
+### Running the Agent in a Dev Container
+
+*(VS Code v1.138+)*: In VS Code, you can run agent sessions inside your project's **Dev Container** environment instead of the default host environment. Enable this with the `chat.agentHost.devContainer.enabled` setting in VS Code. When active, the agent uses the same containerized environment your developers use — language runtimes, tools, and dependencies are already configured exactly as in the dev container specification. Docker must be installed and running on your machine.
+
+This is especially useful for projects with complex environment requirements (specific compiler versions, database services, etc.) where the dev container specification already captures the exact setup needed.
 
 ### What to Include
 
@@ -376,6 +382,22 @@ Since v1.0.47, `--resume` also surfaces **cloud agent sessions that haven't yet 
 | No PR required | You can steer tasks that haven't yet opened a pull request |
 
 > **Note**: Remote control replaces the earlier "steering" feature. If you see references to steering in older documentation, remote control is the updated equivalent.
+
+## VS Code Agent Features
+
+### Automations (GA in v1.138)
+
+**VS Code Automations** — recurring scheduled agent tasks — graduated to general availability in VS Code v1.138. Previously a preview feature, automations are now enabled by default and can be **exported and imported** to share automation configurations across team members or environments. Common use cases include scheduled issue triage, daily change catchup summaries, and automated bug-finding sweeps.
+
+Automations share the same concept as [Agentic Workflows](../agentic-workflows/) but run inside VS Code rather than GitHub Actions. Use automations when you want scheduled agent tasks to run locally, and agentic workflows when you want them to run in the cloud on a GitHub repository.
+
+### Creating Pull Requests from Agent Sessions
+
+*(VS Code v1.138, experimental)*: When `chat.agentMerge.enabled` is turned on, you can create a pull request directly from an agent session in VS Code — entering the title, description, draft status, and merge options in a single form without leaving the editor.
+
+### Keeping Track of Active Sessions
+
+*(VS Code v1.138, Preview)*: With `chat.agentSessions.archiveNudge.enabled`, VS Code can automatically mark agent sessions as done when their PRs are merged, and optionally auto-delete sessions after a configurable grace period. This keeps your sessions list tidy as long-running work completes.
 
 ## Hooks and the Coding Agent
 
