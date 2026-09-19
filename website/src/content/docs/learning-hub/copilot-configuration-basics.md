@@ -3,7 +3,7 @@ title: 'Copilot Configuration Basics'
 description: 'Learn how to configure GitHub Copilot at user, workspace, and repository levels to optimize your AI-assisted development experience.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-09-12
+lastUpdated: 2026-09-19
 estimatedReadingTime: '10 minutes'
 tags:
   - configuration
@@ -945,6 +945,38 @@ copilot skill enable my-skill    # enable a specific skill
 ### Command-Line Parsing Rewrite
 
 *(v1.0.84+)* Command-line parsing moved from Commander to a Rust-based grammar that mirrors what the CLI actually parses, which also generates shell completions directly from that grammar — so `copilot <TAB>` now offers root flags alongside subcommands, and each subcommand only shows its own options. As a result of this change, some error and help wording changed, `copilot login --host` now works correctly, and `--max-autopilot-continues` no longer accepts scientific notation as a value.
+
+### Concise Transcript View
+
+*(v1.0.85+)* Set `transcriptView` to `"concise"` to group tool activity — file reads, searches, terminal commands — into expandable **work summaries** instead of showing every tool call as a separate timeline entry. This keeps long multi-step sessions readable at a glance:
+
+```json
+{
+  "transcriptView": "concise"
+}
+```
+
+Or toggle it interactively with `/settings` → Transcript view → Concise. Expanding a summary reveals the individual tool calls within it, so you can still inspect exactly what the agent did when needed.
+
+### Context Management Tools for Agents
+
+*(v1.0.85+)* Open `/settings` to find new opt-in options that give agents and subagents access to **context management tools** — commands that let the agent inspect and trim its own context window. This is useful for long autonomous runs where the agent benefits from managing token consumption explicitly, but it is off by default to keep the interaction surface minimal for everyday use.
+
+### Worktree Path Template (CLI)
+
+*(v1.0.87+)* The `worktreePathTemplate` setting controls where `/worktree`, `/move`, `/new`, and `--worktree` create new git worktrees. Set it to a path template using the placeholders `{repoPath}`, `{repo}`, `{branch}`, and `{branchSlug}`:
+
+```json
+{
+  "worktreePathTemplate": "~/src/worktrees/{repo}/{branch}"
+}
+```
+
+Leaving it unset keeps the previous layout (`<repo>.worktrees/` with slashes in the branch name flattened to dashes). This is especially useful when you manage worktrees across multiple repositories and want a consistent directory structure.
+
+### Auto Routing Tier Startup Defaults
+
+*(v1.0.87+)* Organization administrators can now configure startup defaults for the **Auto routing tier**, including a strict policy (auto routing cannot be overridden by users) and a user-overridable policy (users can opt out). These settings are configured from organization policy and take effect at session startup. Check with your Copilot admin if you're in a managed environment and want to understand or adjust your default routing behavior.
 
 ## Common Questions
 

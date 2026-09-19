@@ -3,7 +3,7 @@ title: 'Agents and Subagents'
 description: 'Learn how delegated subagents differ from primary agents, when to use them, and how to launch them in VS Code and Copilot CLI.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-09-12
+lastUpdated: 2026-09-19
 estimatedReadingTime: '9 minutes'
 tags:
   - agents
@@ -136,7 +136,7 @@ That makes `/fleet` a practical way to launch subagents even if you are not auth
 
 ### Rubber-duck agent
 
-Available in `/experimental` (v1.0.42+), the **rubber-duck agent** applies a novel multi-model pattern: when you're working in a GPT-powered session, the rubber-duck agent internally routes certain requests through Claude to provide a second perspective. The idea is similar to rubber-duck debugging — talking through a problem with a different "listener" often surfaces assumptions or blind spots you didn't notice.
+Available in `/experimental` (v1.0.42+), the **rubber-duck agent** applies a novel multi-model pattern: it internally routes certain requests through a model from a different family to provide a second perspective. The idea is similar to rubber-duck debugging — talking through a problem with a different "listener" often surfaces assumptions or blind spots you didn't notice.
 
 In v1.0.64+, you can configure the rubber-duck agent (including its complementary model strategy) directly from `/subagents`:
 
@@ -152,6 +152,8 @@ Or you can still enable experimental features and select it from the agent picke
 ```
 
 The **complementary model strategy** lets you specify that the rubber-duck agent should automatically pick a model from a different family than your primary model (e.g., if you're on Claude, it selects a GPT model, and vice versa). This maximises the diversity of perspectives.
+
+> *(v1.0.87+)* The rubber-duck agent is now available for every model family, including low-cost-tier session models — not just GPT-powered sessions. This means you can get a multi-model second perspective regardless of which model you start with.
 
 Because it runs as a sub-agent layer rather than replacing your primary model, you keep your current session model and context while the rubber-duck analysis runs in the background.
 
