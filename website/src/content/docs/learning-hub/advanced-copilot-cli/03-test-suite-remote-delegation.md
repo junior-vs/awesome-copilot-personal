@@ -3,7 +3,7 @@ title: '03 · Test Suite, Remote & Delegation'
 description: 'Turn accessibility checks into a Playwright-backed feedback loop, steer sessions with /remote, and offload work with /delegate.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-26
+lastUpdated: 2026-10-01
 ---
 
 # Module 3 — Enhancing the test suite with remote and delegation
@@ -67,7 +67,11 @@ The goal is a tight evidence loop: scaffold tests, run them, classify each failu
 3. Run `npm run install:all` to ensure dependencies are up to date.
 4. Start the app with `npm run dev`, open `http://localhost:4321` or the forwarded Codespaces URL, and confirm the AssetTrack UI loads. 
 5. Stop the dev server by pressing <kbd>ctrl</kbd>+<kbd>C</kbd> in the terminal.
-6. If you don't have a Copilot CLI session already running, type `copilot` in the terminal to start a new session.
+
+> [!NOTE]
+> `--yolo` lets Copilot read files, run commands, and call tools without pausing to ask. That's safe here because your codespace is a disposable container whose token only reaches this repository (or your fork), so anything Copilot does stays inside your copy of AssetTrack.
+
+6. If you don't have a Copilot CLI session already running, run `copilot --yolo` in the terminal to start one.
 7. Ask for a read-only test inventory:
 
     ```text

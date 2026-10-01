@@ -3,7 +3,7 @@ title: '04 · Shaping the Lifecycle with Hooks'
 description: 'Wire deterministic lifecycle hooks so tests, lint, and build feedback flow back into the agent automatically.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-26
+lastUpdated: 2026-10-01
 ---
 
 # Module 4 — Shaping Copilot CLI's lifecycle with hooks
@@ -200,8 +200,8 @@ AssetTrack's checks span four different stacks - .NET, Java, Python, TypeScript,
 3. Download `.github/hooks/scripts/test-router.sh`, which reads the edited file path from the `postToolUse` payload, runs the right test runner for that stack and emits the result as `additionalContext`. The same script also handles `agentStop` by looking at changed files and blocking only when the relevant stack's tests fail:
 
     ```bash
-    curl -o .github/hooks/scripts/test-router.sh \
-      https://raw.githubusercontent.com/github-samples/advanced-copilot-cli/main/assets/04/.github/hooks/scripts/test-router.sh
+    curl --fail -o .github/hooks/scripts/test-router.sh \
+      https://raw.githubusercontent.com/github-samples/advanced-copilot-cli/1af928893a2e180dc3b2a469b22712a78b1f74a7/assets/04/.github/hooks/scripts/test-router.sh
     ```
 
 4. Make the script executable:

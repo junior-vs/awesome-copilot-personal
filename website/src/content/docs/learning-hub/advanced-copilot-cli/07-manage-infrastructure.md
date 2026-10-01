@@ -3,7 +3,7 @@ title: '07 · Managing Copilot''s Infrastructure'
 description: 'Scale your AI infrastructure with a custom MCP server, a plugin, and enterprise-level distribution.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-26
+lastUpdated: 2026-10-01
 ---
 
 # Module 7 — Managing Copilot's infrastructure
@@ -130,13 +130,13 @@ With the catalog registered, "where does this data live?" is now a first-class t
 With our new MCP server created, let's create a pull request (PR) so it becomes part of our project!
 
 1. Use the `/new` prompt in Copilot to create a new session.
-2. Use the following prompt to tell Copilot to create a new branch, a commit and a PR, and to merge the PR when done:
+2. Use the following prompt to tell Copilot to create a new branch, a commit, and a PR:
 
     ```
-    We just defined a new MCP server. Can you please create a new branch called add-mcp-server, generate a short commit message, then create the PR. Once the CI completes for the PR, go ahead and merge it.
+    We just defined a new MCP server. Can you please create a new branch called add-mcp-server, generate a short commit message, then create the PR.
     ```
 
-Copilot will get to work on creating the PR and merging it. This will take just a couple of minutes to complete.
+Copilot creates the branch, commit, and PR, then stops. Because this MCP server reaches the service databases and will be distributed as shared infrastructure, treat the PR as a human review gate: read the diff yourself, let CI finish, and merge it only once you're satisfied it's correct. Building that review habit for code that runs organization-wide matters more than shaving off a few minutes.
 
 ## Plugins: bundling AI infrastructure
 

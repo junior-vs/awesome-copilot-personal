@@ -3,7 +3,7 @@ title: '06 · Modernizing Apps'
 description: 'Give Copilot better signal with LSP and MCP servers and drive a defensible modernization with per-stack migrator agents.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-26
+lastUpdated: 2026-10-01
 ---
 
 # Module 6 — Modernizing apps with Copilot CLI

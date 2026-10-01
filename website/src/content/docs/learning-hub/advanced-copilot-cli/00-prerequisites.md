@@ -3,7 +3,7 @@ title: '00 · Prerequisites'
 description: 'Set up your Codespaces-based environment and prerequisites for the Advanced GitHub Copilot CLI course.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-26
+lastUpdated: 2026-10-01
 ---
 
 # Module 0 — Prerequisites and environment setup
@@ -38,16 +38,17 @@ In this lesson, you will:
 
 When doing standard development, the first step is often to fork or clone the repository you'll be contributing to. For our course, since you'll be working through the exercises on your own, you'll grab a separate copy of the project. You'll do this by creating a new instance of the repository by using a [template repository][github-template-docs] on your own personal GitHub account.
 
-1. In your browser, navigate to [https://github.com/github-samples/contoso-inventory](https://github.com/github-samples/contoso-inventory).
+1. In your browser, navigate to the [contoso-inventory repository][contoso-inventory].
 2. Select **Use this template**.
 3. Select **Create a new repository**.
 4. Under **Owner**, select your personal GitHub account.
 5. For **Repository name**, enter `AssetTrack`.
-6. Leave the remaining options at their defaults.
-7. Select **Create repository**.
-8. Once the new repository has been created, select the **Code** button.
-9. Switch to the **Codespaces** tab.
-10. Select **Create codespace on main**.
+6. Select **Include all branches** so the module catch-up branches (`start-of-module-02` through `start-of-module-07`) are copied to your repository.
+7. Leave the remaining options at their defaults.
+8. Select **Create repository**.
+9. Once the new repository has been created, select the **Code** button.
+10. Switch to the **Codespaces** tab.
+11. Select **Create codespace on main**.
 
 > [!NOTE]
 > The first launch of the codespace will take a few minutes. AssetTrack uses a custom devcontainer that includes the runtimes for all four stacks (Java, Node/Astro, .NET, Python/FastAPI), and the container image needs to be built the first time the codespace starts. Subsequent launches will be much faster.
@@ -66,9 +67,12 @@ Before pointing Copilot CLI at the codebase, you need to know the app runs in it
 
 Copilot CLI is the primary tool you'll spend the rest of the course driving, so the final setup step is to get it installed, signed in, and verified inside the codespace. You'll do this in a second terminal so the app keeps running undisturbed in the first one — that side-by-side layout (app on the left, agent on the right) is the workflow you'll use for every exercise that follows. Authenticating once now means later modules can jump straight into prompting instead of stopping to handle a login flow.
 
+> [!NOTE]
+> `--yolo` lets Copilot read files, run commands, and call tools without pausing to ask. That's safe here because your codespace is a disposable container whose token only reaches this repository (or your fork), so anything Copilot does stays inside your copy of AssetTrack.
+
 1. In your codespace, press <kbd>ctrl</kbd>+<kbd>shift</kbd>+<kbd>`</kbd> to open a new terminal.
 2. Install Copilot CLI by following the [official install instructions][copilot-cli-install].
-3. Run `copilot` to start the CLI.
+3. Run `copilot --yolo` to start Copilot CLI.
 4. Follow the prompts to sign in with your GitHub account and authenticate.
 5. Once you reach the prompt, enter `hello` and press <kbd>Enter</kbd>.
 6. Confirm Copilot CLI responds.

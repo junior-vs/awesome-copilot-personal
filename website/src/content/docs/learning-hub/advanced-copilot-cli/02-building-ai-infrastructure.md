@@ -3,7 +3,7 @@ title: '02 · Building an AI Infrastructure Foundation'
 description: 'Build reusable AI infrastructure — custom instructions, a custom agent, and contribution standards — for a brownfield repo.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-26
+lastUpdated: 2026-10-01
 ---
 
 # Module 2 — Building an AI infrastructure foundation
@@ -77,15 +77,17 @@ Let's start by capturing existing conventions and patterns in the codebase in a 
 
 ### Generate the baseline instructions
 
+> [!NOTE]
+> `--yolo` lets Copilot read files, run commands, and call tools without pausing to ask. That's safe here because your codespace is a disposable container whose token only reaches this repository (or your fork), so anything Copilot does stays inside your copy of AssetTrack.
+
 1. Return to your codespace. If you closed it, navigate to your repository on GitHub.com, select **Code** > **Codespaces**, then reopen your existing codespace.
-2. Open the Command Palette (`Ctrl+Shift+P` or `Cmd+Shift+P`) and select **Chat: New Copilot CLI Session to the side** 
-3. If prompted, trust the project folder by selecting **Yes, and remember this folder for future sessions**.
-4. Run `/models`, select **Auto** from the list and **Enter**
-5. Run `/init`. 
-    
+2. Open a terminal by selecting <kbd>Ctrl</kbd> + <kbd>`</kbd>, then run `copilot --yolo` from the repository root to start Copilot CLI.
+3. Run `/models`, select **Auto** from the list, and select <kbd>Enter</kbd>.
+4. Run `/init`.
+
     Copilot scans the repository and generates a `.github/copilot-instructions.md` file. You'll see the agent reviewing available docs, reading through the code, it may also try to run build and test-related commands, then draft the instructions file based on its findings.
 
-6. Open `.github/copilot-instructions.md` and review the generated content. What you need to be asking yourself as you review is *"If Copilot followed these instructions exactly, would it produce better, acceptable code?"* If the answer is "no" or "maybe", revise the instructions removing anything that isn't helpful or accurate, clarify what is too vague and add any important rules or conventions the agent missed. 
+5. Open `.github/copilot-instructions.md` and review the generated content. What you need to be asking yourself as you review is *"If Copilot followed these instructions exactly, would it produce better, acceptable code?"* If the answer is "no" or "maybe", revise the instructions removing anything that isn't helpful or accurate, clarify what is too vague and add any important rules or conventions the agent missed.
 
 > [!TIP]
 > Re-run `/init` when the instructions start drifting significantly from reality either after a major restructure, after adopting a new framework or when Copilot consistently produces code that violates your current conventions. You can also run it frequently as a diagnostic tool to see what Copilot *thinks* your conventions are and if you are not happy with the "perceptions", treat that as a sign you need to improve on your code quality and consistency.
@@ -200,7 +202,7 @@ Now let's add a reusable `Accessibility Expert` custom agent and use it against 
 
 ## Agent skills
 
-Custom agents introduce *specialized personas*. **Agent skills** change what Copilot *knows* to do. A skill is a packaged capability, could include an instruction set, optional scripts and resources - that the agent can invoke **at runtime** when the task matches its trigger. Skills live in `.copilot/skills/` (for repo-scoped) or `~/.copilot/skills/` (for user-scoped) and in Copilot CLI, you use `/skills` to view and manage them.
+Custom agents introduce *specialized personas*. **Agent skills** change what Copilot *knows* to do. A skill is a packaged capability, could include an instruction set, optional scripts and resources - that the agent can invoke **at runtime** when the task matches its trigger. Skills live in `.github/skills/` (for repo-scoped) or `~/.copilot/skills/` (for user-scoped) and in Copilot CLI, you use `/skills` to view and manage them.
 
 The new AI infrastructure for Contoso is coming together nicely, but there's one more piece to add. Now that you have a baseline for how copilot should approach making updates locally, we want to bootstrap the contribution standards that should be followed to land these updates through channels that integrate with the team's existing workflows for enhanced collaboration, human-in-the-loop review and auditability.
 

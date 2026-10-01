@@ -3,7 +3,7 @@ title: '05 · Adding a Feature: Barcode Support'
 description: 'Plan and build a new feature end to end with /research, /plan, rubber-duck critique, /fleet, and a QA custom agent.'
 authors:
   - GitHub Copilot Learning Hub Team
-lastUpdated: 2026-08-26
+lastUpdated: 2026-10-01
 ---
 
 # Module 5 — Adding a new feature: barcode support
