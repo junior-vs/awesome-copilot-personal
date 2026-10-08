@@ -1,0 +1,39 @@
+<!-- Adapted from First Steps with GitHub Copilot by James Montemagno (MIT License) -->
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="600" class="art" viewBox="0 0 640 600" role="img" aria-label="The Copilot app session details panel showing path, project, agent, changes, tokens, and context usage"><title>The Copilot app session details panel showing path, project, agent, changes, tokens, and context usage</title><style>svg{--bg:#080b12;--bg-elevated:#0d111a;--surface:#121824;--surface-2:#171e2c;--border:#283043;--border-soft:#1d2636;--text:#f1f5fb;--muted:#9ca8ba;--purple:#a371f7;--purple-bright:#bf8cff;--blue:#58a6ff;--green:#3fb950;--yellow:#d29922}@media(prefers-color-scheme:light){svg{--bg:#f7f8fb;--bg-elevated:#fff;--surface:#fff;--surface-2:#f1f3f8;--border:#d5dae5;--border-soft:#e7eaf0;--text:#161b26;--muted:#536071;--purple:#6f42c1;--purple-bright:#8250df;--blue:#0969da;--green:#1a7f37}}.art .plate{fill:var(--bg-elevated);stroke:var(--border)}.art .panel{fill:var(--surface)}.art .chip{fill:var(--bg-elevated);stroke:var(--border)}.art .rule{stroke:var(--border);stroke-width:1}.art .track{fill:var(--surface-2)}.art .fill{fill:var(--purple)}.art .fill.alt{fill:var(--blue)}.art .fill.ok{fill:var(--green)}.art .stroke{fill:none;stroke:var(--muted);stroke-width:1.2}.art .lead{stroke:var(--purple);stroke-width:1;stroke-dasharray:3 3}.art .link{fill:var(--blue)}.art .mono text,.art text.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}.art text{font-family:Inter,ui-sans-serif,system-ui,sans-serif}.art .t-xs{font-size:10px}.art .t-sm{font-size:12px}.art .txt{fill:var(--text)}.art .mut{fill:var(--muted)}.art .accent{fill:var(--purple-bright)}.art .ok{fill:var(--green)}</style><rect class="plate" x="0.5" y="0.5" width="639" height="599" rx="12"/>
+<text class="t-sm txt" x="170" y="30">Space Quiz build</text><text class="t-sm mut mono" x="286" y="30">· space-quiz/main</text>
+<rect class="panel" x="170" y="42" width="300" height="536" rx="10"/>
+<rect class="chip" x="186" y="56" width="52" height="22" rx="6"/><text class="t-xs accent mono" x="196" y="71">main</text>
+<text class="t-xs mut" x="246" y="71">from</text>
+<rect class="chip" x="280" y="56" width="104" height="22" rx="6"/><text class="t-xs accent mono" x="292" y="71">origin/main</text>
+<path class="rule" d="M170 90h300"/>
+<text class="t-xs mut" x="186" y="114">Remote control</text><text class="t-xs txt" x="318" y="114">Not enabled</text>
+<text class="t-xs mut" x="186" y="140">Path</text><text class="t-xs txt mono" x="318" y="140">~/Projects/spa...</text>
+<text class="t-xs mut" x="186" y="166">Project</text><text class="t-xs txt" x="318" y="166">space-quiz</text>
+<text class="t-xs mut" x="186" y="192">Session name</text><text class="t-xs txt" x="318" y="192">Space Quiz build</text>
+<text class="t-xs mut" x="186" y="218">Session ID</text><text class="t-xs txt mono" x="318" y="218">509d8b9a-cc2e...</text>
+<text class="t-xs mut" x="186" y="244">Agent</text><text class="t-xs txt" x="318" y="244">Default</text><text class="t-xs link" x="376" y="244">Change</text>
+<path class="rule" d="M170 260h300"/>
+<text class="t-xs mut" x="186" y="284">Changes</text><text class="t-xs ok" x="318" y="284">1 file changed</text>
+<path class="rule" d="M170 300h300"/>
+<text class="t-xs mut" x="186" y="324">Tokens</text>
+<text class="t-xs txt" x="318" y="324">up 6.8M</text><text class="t-xs mut" x="374" y="324">(6.8M cached)</text>
+<text class="t-xs txt" x="318" y="344">down 35.1K</text>
+<text class="t-xs mut" x="186" y="374">Context</text>
+<text class="t-sm txt" x="186" y="396">27%</text><text class="t-xs mut" x="454" y="396" text-anchor="end">328K</text>
+<rect class="track" x="186" y="404" width="268" height="7" rx="3.5"/>
+<rect class="fill alt" x="186" y="404" width="8" height="7" rx="3.5"/>
+<rect class="fill" x="196" y="404" width="4" height="7" rx="3.5"/>
+<rect class="fill ok" x="202" y="404" width="62" height="7" rx="3.5"/>
+<text class="t-xs mut" x="186" y="434">Session spend</text><text class="t-xs txt" x="318" y="434">20.7 AI credits</text>
+<path class="rule" d="M170 450h300"/>
+<text class="t-xs mut" x="212" y="474">Enable remote control</text>
+<text class="t-xs mut" x="212" y="498">Rename session</text>
+<text class="t-xs mut" x="212" y="522">View session insights</text>
+<text class="t-xs mut" x="212" y="546">Share as secret gist</text>
+<text class="t-xs mut" x="212" y="570">Archive session</text>
+<text class="t-xs accent" x="20" y="162">Which folder and branch</text>
+<path class="lead" d="M132 170h34"/>
+<text class="t-xs accent" x="490" y="392">The number to watch</text>
+<text class="t-xs mut" x="490" y="406">As context fills, start a fresh session</text>
+<path class="lead" d="M474 400h12"/>
+</svg>

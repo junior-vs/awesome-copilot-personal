@@ -1,0 +1,20 @@
+<!-- Adapted from First Steps with GitHub Copilot by James Montemagno (MIT License) -->
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="300" class="art" viewBox="0 0 640 300" role="img" aria-label="The Copilot app New session screen with the prompt box and folder, mode, and agent pickers"><title>The Copilot app New session screen with the prompt box and folder, mode, and agent pickers</title><style>svg{--bg:#080b12;--bg-elevated:#0d111a;--surface:#121824;--surface-2:#171e2c;--border:#283043;--border-soft:#1d2636;--text:#f1f5fb;--muted:#9ca8ba;--purple:#a371f7;--purple-bright:#bf8cff;--blue:#58a6ff;--green:#3fb950;--yellow:#d29922}@media(prefers-color-scheme:light){svg{--bg:#f7f8fb;--bg-elevated:#fff;--surface:#fff;--surface-2:#f1f3f8;--border:#d5dae5;--border-soft:#e7eaf0;--text:#161b26;--muted:#536071;--purple:#6f42c1;--purple-bright:#8250df;--blue:#0969da;--green:#1a7f37}}.art .plate{fill:var(--bg-elevated);stroke:var(--border)}.art .mark{fill:var(--surface-2);stroke:var(--border)}.art .markGlyph{fill:var(--text)}.art .input{fill:var(--surface-2);stroke:var(--border)}.art .send{fill:var(--purple)}.art .sendGlyph{stroke:#fff;stroke-width:1.6;fill:none;stroke-linecap:round}.art .card.sel{fill:color-mix(in srgb,var(--purple) 16%,var(--bg-elevated));stroke:var(--purple)}.art .stroke{fill:none;stroke:var(--muted);stroke-width:1.2}.art .dot{fill:var(--border)}.art text{font-family:Inter,ui-sans-serif,system-ui,sans-serif}.art .t-xs{font-size:10px}.art .t-sm{font-size:12px}.art .txt{fill:var(--text)}.art .mut{fill:var(--muted)}.art .accent{fill:var(--purple-bright)}</style><rect class="plate" x="0.5" y="0.5" width="639" height="299" rx="12"/>
+<circle class="mark" cx="320" cy="72" r="26"/>
+<path class="markGlyph" d="M320 54c-10 0-18 8-18 18 0 8 5 14.8 12.3 17.1.9.2 1.2-.4 1.2-.9v-3.1c-5 1.1-6.1-2.4-6.1-2.4-.8-2.1-2-2.7-2-2.7-1.7-1.1.1-1.1.1-1.1 1.8.1 2.8 1.9 2.8 1.9 1.6 2.8 4.3 2 5.3 1.5.2-1.2.6-2 1.2-2.5-4-.5-8.2-2-8.2-8.9 0-2 .7-3.6 1.9-4.8-.2-.5-.8-2.3.2-4.8 0 0 1.5-.5 5 1.8a17 17 0 0 1 9 0c3.5-2.3 5-1.8 5-1.8 1 2.5.4 4.3.2 4.8a7 7 0 0 1 1.9 4.8c0 6.9-4.2 8.4-8.2 8.8.6.6 1.2 1.7 1.2 3.4v5.1c0 .5.3 1.1 1.2.9A18 18 0 0 0 338 72c0-10-8-18-18-18Z"/>
+<rect class="input" x="40" y="120" width="560" height="96" rx="12"/>
+<text class="t-sm mut" x="62" y="152">Ask anything or paste a URL. Use / for commands...</text>
+<text class="t-sm txt" x="86" y="194">Interactive</text>
+<text class="t-sm txt" x="168" y="194">Auto · Balance</text>
+<text class="t-sm txt" x="272" y="194">Default agent</text>
+<circle class="send" cx="574" cy="188" r="14"/>
+<path class="sendGlyph" d="M574 182v12M569 187l5-5 5 5"/>
+<path class="stroke" d="M62 236h9l2 2h9v8H62Z"/>
+<text class="t-sm txt" x="90" y="246">space-quiz</text>
+<rect class="stroke" x="176" y="236" width="12" height="9" rx="1.5"/>
+<text class="t-sm txt" x="196" y="246">Local</text>
+<text class="t-sm txt" x="264" y="246">main</text>
+<rect class="card sel" x="330" y="228" width="270" height="26" rx="8"/>
+<text class="t-xs accent" x="344" y="245">Start from New → Open folder</text>
+<text class="t-xs mut" x="40" y="284">Pick the folder, the mode, and the agent before you send the first prompt.</text>
+</svg>

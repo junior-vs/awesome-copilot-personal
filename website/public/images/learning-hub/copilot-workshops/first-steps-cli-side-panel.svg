@@ -1,0 +1,23 @@
+<!-- Adapted from First Steps with GitHub Copilot by James Montemagno (MIT License) -->
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="300" class="art" viewBox="0 0 640 300" role="img" aria-label="The Copilot CLI side panel showing the Issues tab with an open issue selected and keyboard hints"><title>The Copilot CLI side panel showing the Issues tab with an open issue selected and keyboard hints</title><style>svg{--bg:#080b12;--bg-elevated:#0d111a;--surface:#121824;--surface-2:#171e2c;--border:#283043;--border-soft:#1d2636;--text:#f1f5fb;--muted:#9ca8ba;--purple:#a371f7;--purple-bright:#bf8cff;--blue:#58a6ff;--green:#3fb950;--yellow:#d29922}@media(prefers-color-scheme:light){svg{--bg:#f7f8fb;--bg-elevated:#fff;--surface:#fff;--surface-2:#f1f3f8;--border:#d5dae5;--border-soft:#e7eaf0;--text:#161b26;--muted:#536071;--purple:#6f42c1;--purple-bright:#8250df;--blue:#0969da;--green:#1a7f37}}.art .plate{fill:var(--bg-elevated);stroke:var(--border)}.art .panel{fill:var(--surface)}.art .win{fill:var(--surface-2)}.art .card.sel{fill:color-mix(in srgb,var(--purple) 16%,var(--bg-elevated));stroke:var(--purple)}.art .chip{fill:var(--bg-elevated);stroke:var(--border)}.art .chip.sel{fill:color-mix(in srgb,var(--purple) 16%,var(--bg-elevated));stroke:var(--purple)}.art .chip.alt{fill:color-mix(in srgb,var(--blue) 16%,var(--bg-elevated));stroke:color-mix(in srgb,var(--blue) 40%,transparent)}.art .ok-stroke{fill:none;stroke:var(--green);stroke-width:1.4}.art .ok-fill{fill:var(--green)}.art .rule{stroke:var(--border);stroke-width:1}.art .dot{fill:var(--border)}.art .dot.red{fill:#f85149}.art .dot.amber{fill:var(--yellow)}.art .dot.green{fill:var(--green)}.art .mono text,.art text.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}.art text{font-family:Inter,ui-sans-serif,system-ui,sans-serif}.art .t-xs{font-size:10px}.art .t-sm{font-size:12px}.art .txt{fill:var(--text)}.art .mut{fill:var(--muted)}.art .accent{fill:var(--purple-bright)}.art .blue{fill:var(--blue)}</style><rect class="plate" x="0.5" y="0.5" width="639" height="299" rx="12"/>
+<rect class="win" x="20" y="18" width="600" height="26" rx="7"/><circle class="dot red" cx="36" cy="31" r="4"/><circle class="dot amber" cx="50" cy="31" r="4"/><circle class="dot green" cx="64" cy="31" r="4"/><text class="t-xs mut" x="320" y="35" text-anchor="middle">space-quiz — copilot</text>
+<rect class="panel" x="20" y="44" width="600" height="238"/>
+<rect class="chip" x="36" y="58" width="84" height="26" rx="6"/><text class="t-xs mut mono" x="78" y="75" text-anchor="middle">Current</text>
+<rect class="chip" x="128" y="58" width="92" height="26" rx="6"/><text class="t-xs mut mono" x="174" y="75" text-anchor="middle">Sessions</text>
+<rect class="chip sel" x="228" y="58" width="70" height="26" rx="6"/><text class="t-xs accent mono" x="263" y="75" text-anchor="middle">Issues</text>
+<rect class="chip" x="306" y="58" width="126" height="26" rx="6"/><text class="t-xs mut mono" x="369" y="75" text-anchor="middle">Pull requests</text>
+<rect class="chip" x="440" y="58" width="66" height="26" rx="6"/><text class="t-xs mut mono" x="473" y="75" text-anchor="middle">Gists</text>
+<text class="t-xs mut mono" x="36" y="116">is:</text>
+<rect class="chip alt" x="60" y="102" width="48" height="20" rx="5"/><text class="t-xs blue mono" x="84" y="116" text-anchor="middle">issue</text>
+<text class="t-xs mut mono" x="118" y="116">is:</text>
+<rect class="chip alt" x="142" y="102" width="46" height="20" rx="5"/><text class="t-xs blue mono" x="165" y="116" text-anchor="middle">open</text>
+<text class="t-xs mut mono" x="198" y="116">repo:</text>
+<rect class="chip alt" x="240" y="102" width="102" height="20" rx="5"/><text class="t-xs blue mono" x="291" y="116" text-anchor="middle">space-quiz</text>
+<rect class="card sel" x="36" y="136" width="568" height="56" rx="8"/>
+<circle class="ok-stroke" cx="56" cy="160" r="6"/><circle class="ok-fill" cx="56" cy="160" r="2"/>
+<text class="t-sm accent" x="74" y="164">Add a score screen at the end of the quiz</text>
+<text class="t-xs mut mono" x="74" y="182">#2 · jamesmontemagno opened 1w ago</text>
+<text class="t-xs accent mono" x="36" y="218">←</text><text class="t-xs mut" x="52" y="218">opens this panel · tab moves between the tabs</text>
+<path d="M36 234h568" style="stroke:var(--border);stroke-width:1"/>
+<text class="t-xs mut mono" x="36" y="262">/ search · enter details · o open · w worktree · c chat · a all</text>
+</svg>

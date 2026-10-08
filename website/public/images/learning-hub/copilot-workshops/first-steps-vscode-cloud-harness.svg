@@ -1,0 +1,18 @@
+<!-- Adapted from First Steps with GitHub Copilot by James Montemagno (MIT License) -->
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="260" class="art" viewBox="0 0 640 260" role="img" aria-label="The Copilot Chat harness picker in VS Code switching from Local to Cloud"><title>The Copilot Chat harness picker in VS Code switching from Local to Cloud</title><style>svg{--bg:#080b12;--bg-elevated:#0d111a;--surface:#121824;--surface-2:#171e2c;--border:#283043;--border-soft:#1d2636;--text:#f1f5fb;--muted:#9ca8ba;--purple:#a371f7;--purple-bright:#bf8cff;--blue:#58a6ff;--green:#3fb950;--yellow:#d29922}@media(prefers-color-scheme:light){svg{--bg:#f7f8fb;--bg-elevated:#fff;--surface:#fff;--surface-2:#f1f3f8;--border:#d5dae5;--border-soft:#e7eaf0;--text:#161b26;--muted:#536071;--purple:#6f42c1;--purple-bright:#8250df;--blue:#0969da;--green:#1a7f37}}.art .plate{fill:var(--bg-elevated);stroke:var(--border)}.art .panel{fill:var(--surface)}.art .win{fill:var(--surface-2)}.art .card{fill:var(--bg-elevated);stroke:var(--border-soft);stroke-width:1}.art .card.sel{fill:color-mix(in srgb,var(--purple) 16%,var(--bg-elevated));stroke:var(--purple)}.art .chip.sel{fill:color-mix(in srgb,var(--purple) 16%,var(--bg-elevated));stroke:var(--purple)}.art .menu{fill:var(--bg-elevated);stroke:var(--purple);filter:drop-shadow(0 12px 24px rgba(0,0,0,.28))}.art .bubble{fill:color-mix(in srgb,var(--blue) 15%,var(--surface));stroke:color-mix(in srgb,var(--blue) 40%,transparent)}.art .input{fill:var(--surface-2);stroke:var(--border)}.art .rule{stroke:var(--border);stroke-width:1}.art .dot{fill:var(--border)}.art .dot.red{fill:#f85149}.art .dot.amber{fill:var(--yellow)}.art .dot.green{fill:var(--green)}.art text{font-family:Inter,ui-sans-serif,system-ui,sans-serif}.art .t-xs{font-size:10px}.art .t-sm{font-size:12px}.art .txt{fill:var(--text)}.art .mut{fill:var(--muted)}.art .accent{fill:var(--purple-bright)}.art .ok{fill:var(--green)}</style><rect class="plate" x="0.5" y="0.5" width="639" height="259" rx="12"/>
+<rect class="win" x="20" y="18" width="600" height="26" rx="7"/><circle class="dot red" cx="36" cy="31" r="4"/><circle class="dot amber" cx="50" cy="31" r="4"/><circle class="dot green" cx="64" cy="31" r="4"/><text class="t-xs mut" x="320" y="35" text-anchor="middle">Copilot Chat</text>
+<rect class="panel" x="20" y="44" width="600" height="198"/>
+<rect class="bubble" x="300" y="60" width="304" height="30" rx="10"/><text class="t-sm txt" x="316" y="80">Add three new colour themes</text>
+<rect class="card" x="36" y="104" width="248" height="52" rx="10"/>
+<text class="t-sm txt" x="52" y="126">Working in the cloud...</text>
+<text class="t-xs mut" x="52" y="146">Follow the session on GitHub</text>
+<rect class="input" x="36" y="188" width="568" height="34" rx="9"/><text class="t-sm mut" x="54" y="210">Ask Copilot</text>
+<rect class="chip sel" x="486" y="196" width="102" height="20" rx="10"/><text class="t-xs accent" x="500" y="210">Harness ⌄</text>
+<rect class="menu" x="396" y="60" width="192" height="126" rx="9"/>
+<text class="t-xs mut" x="412" y="80">Harness</text>
+<text class="t-xs mut" x="412" y="102">Copilot</text>
+<rect class="card" x="404" y="108" width="176" height="20" rx="6"/><text class="t-xs txt" x="418" y="122">Local</text>
+<rect class="card sel" x="404" y="130" width="176" height="20" rx="6"/><text class="t-xs accent" x="418" y="144">Cloud</text><text class="t-xs ok" x="568" y="144" text-anchor="end">✓</text>
+<path class="rule" d="M404 158h176"/>
+<text class="t-xs mut" x="418" y="174">Claude</text><text class="t-xs mut" x="500" y="174">Codex</text>
+</svg>

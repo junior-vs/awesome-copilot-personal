@@ -1,0 +1,19 @@
+<!-- Adapted from First Steps with GitHub Copilot by James Montemagno (MIT License) -->
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="250" class="art" viewBox="0 0 640 250" role="img" aria-label="The Changes tab in the app flyout showing a file diff"><title>The Changes tab in the app flyout showing a file diff</title><style>svg{--bg:#080b12;--bg-elevated:#0d111a;--surface:#121824;--surface-2:#171e2c;--border:#283043;--border-soft:#1d2636;--text:#f1f5fb;--muted:#9ca8ba;--purple:#a371f7;--purple-bright:#bf8cff;--blue:#58a6ff;--green:#3fb950;--yellow:#d29922}@media(prefers-color-scheme:light){svg{--bg:#f7f8fb;--bg-elevated:#fff;--surface:#fff;--surface-2:#f1f3f8;--border:#d5dae5;--border-soft:#e7eaf0;--text:#161b26;--muted:#536071;--purple:#6f42c1;--blue:#0969da;--green:#1a7f37}}.art .plate{fill:var(--bg-elevated);stroke:var(--border)}.art .panel{fill:var(--surface)}.art .rail{fill:var(--surface-2)}.art .win{fill:var(--surface-2)}.art .card{fill:var(--bg-elevated);stroke:var(--border-soft);stroke-width:1}.art .tab{fill:transparent;stroke:var(--border-soft)}.art .tab.sel{fill:var(--bg-elevated);stroke:var(--purple)}.art .bubble{fill:color-mix(in srgb,var(--blue) 15%,var(--surface));stroke:color-mix(in srgb,var(--blue) 40%,transparent)}.art .fill{fill:var(--purple)}.art .diff.add{fill:color-mix(in srgb,var(--green) 16%,transparent)}.art .diff.del{fill:color-mix(in srgb,#f85149 16%,transparent)}.art .dot{fill:var(--border)}.art .dot.red{fill:#f85149}.art .dot.amber{fill:var(--yellow)}.art .dot.green{fill:var(--green)}.art .mono text,.art text.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}.art text{font-family:Inter,ui-sans-serif,system-ui,sans-serif}.art .t-xs{font-size:10px}.art .t-sm{font-size:12px}.art .txt{fill:var(--text)}.art .mut{fill:var(--muted)}.art .accent{fill:var(--purple-bright)}.art .ok{fill:var(--green)}.art .bad{fill:#f85149}</style><rect class="plate" x="0.5" y="0.5" width="639" height="249" rx="12"/>
+<rect class="win" x="20" y="18" width="600" height="26" rx="7"/><circle class="dot red" cx="36" cy="31" r="4"/><circle class="dot amber" cx="50" cy="31" r="4"/><circle class="dot green" cx="64" cy="31" r="4"/><text class="t-xs mut" x="320" y="35" text-anchor="middle">space-quiz · session</text>
+<rect class="panel" x="20" y="44" width="600" height="188"/>
+<rect class="rail" x="380" y="44" width="240" height="188"/>
+<rect class="tab sel" x="392" y="56" width="70" height="24" rx="7"/><text class="t-xs txt" x="427" y="72" text-anchor="middle">Changes</text>
+<rect class="tab" x="468" y="56" width="62" height="24" rx="7"/><text class="t-xs mut" x="499" y="72" text-anchor="middle">Terminal</text>
+<text class="t-xs mut" x="392" y="102">1 file changed</text><text class="t-xs ok" x="608" y="102" text-anchor="end">+142 -8</text>
+<rect class="card" x="392" y="112" width="216" height="28" rx="7"/><text class="t-sm txt" x="406" y="131">index.html</text>
+<rect class="diff add" x="392" y="148" width="216" height="16" rx="4"/><text class="t-xs ok mono" x="402" y="160">+ &lt;div class="progress"&gt;</text>
+<rect class="diff add" x="392" y="168" width="216" height="16" rx="4"/><text class="t-xs ok mono" x="402" y="180">+ &lt;span id="score"&gt;0&lt;/span&gt;</text>
+<rect class="diff del" x="392" y="188" width="216" height="16" rx="4"/><text class="t-xs bad mono" x="402" y="200">- &lt;h1&gt;Quiz&lt;/h1&gt;</text>
+<text class="t-xs mut" x="44" y="76">SESSION</text>
+<rect class="bubble" x="44" y="88" width="312" height="30" rx="10"/><text class="t-sm txt" x="58" y="108">Implement issue #12</text>
+<rect class="card" x="44" y="128" width="312" height="80" rx="10"/>
+<text class="t-sm txt" x="58" y="150">Added the per-question timer</text>
+<text class="t-xs mut" x="58" y="172">Review the diff before you accept it</text>
+<rect class="fill" x="58" y="186" width="180" height="6" rx="3"/>
+</svg>

@@ -1,0 +1,16 @@
+<!-- Adapted from First Steps with GitHub Copilot by James Montemagno (MIT License) -->
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="330" class="art" viewBox="0 0 640 330" role="img" aria-label="Copilot CLI welcome screen in a terminal window"><title>Copilot CLI welcome screen in a terminal window</title><style>svg{--bg:#080b12;--bg-elevated:#0d111a;--surface:#121824;--surface-2:#171e2c;--border:#283043;--border-soft:#1d2636;--text:#f1f5fb;--muted:#9ca8ba;--purple:#a371f7;--purple-bright:#bf8cff;--blue:#58a6ff;--green:#3fb950;--yellow:#d29922}@media(prefers-color-scheme:light){svg{--bg:#f7f8fb;--bg-elevated:#fff;--surface:#fff;--surface-2:#f1f3f8;--border:#d5dae5;--border-soft:#e7eaf0;--text:#161b26;--muted:#536071;--purple:#6f42c1;--purple-bright:#8250df;--blue:#0969da;--green:#1a7f37}}.art .plate{fill:var(--bg-elevated);stroke:var(--border)}.art .panel{fill:var(--surface)}.art .win{fill:var(--surface-2)}.art .card{fill:var(--bg-elevated);stroke:var(--border-soft);stroke-width:1}.art .caret{fill:var(--purple-bright)}.art .dot{fill:var(--border)}.art .dot.red{fill:#f85149}.art .dot.amber{fill:var(--yellow)}.art .dot.green{fill:var(--green)}.art .mono text,.art text.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}.art text{font-family:Inter,ui-sans-serif,system-ui,sans-serif}.art .t-xs{font-size:10px}.art .t-sm{font-size:12px}.art .txt{fill:var(--text)}.art .mut{fill:var(--muted)}.art .accent{fill:var(--purple-bright)}.art .ok{fill:var(--green)}</style><rect class="plate" x="0.5" y="0.5" width="639" height="329" rx="12"/>
+<rect class="win" x="20" y="18" width="600" height="26" rx="7"/><circle class="dot red" cx="36" cy="31" r="4"/><circle class="dot amber" cx="50" cy="31" r="4"/><circle class="dot green" cx="64" cy="31" r="4"/><text class="t-xs mut" x="320" y="35" text-anchor="middle">space-quiz — copilot</text>
+<rect class="panel" x="20" y="44" width="600" height="268"/>
+<text class="t-sm accent mono" x="44" y="76">┌─────────────────────────────┐</text>
+<text class="t-sm accent mono" x="44" y="94">│   GitHub Copilot CLI        │</text>
+<text class="t-sm accent mono" x="44" y="112">└─────────────────────────────┘</text>
+<text class="t-sm mut mono" x="44" y="142">Trust the files in this folder?</text>
+<text class="t-sm txt mono" x="44" y="162">&gt; 1. Yes, proceed</text>
+<text class="t-sm mut mono" x="44" y="180">  2. No, exit</text>
+<rect class="card" x="44" y="198" width="552" height="34" rx="8"/>
+<text class="t-sm ok mono" x="60" y="219">/model</text><text class="t-sm mut" x="122" y="219">choose the model for this session</text>
+<rect class="card" x="44" y="238" width="552" height="34" rx="8"/>
+<text class="t-sm ok mono" x="60" y="259">/help</text><text class="t-sm mut" x="122" y="259">list every slash command</text>
+<text class="t-sm accent mono" x="44" y="294">&gt;</text><text class="t-sm txt mono" x="60" y="294">Create a space exploration quiz</text><rect class="caret" x="292" y="282" width="8" height="16"/>
+</svg>

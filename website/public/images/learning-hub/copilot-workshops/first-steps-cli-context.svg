@@ -1,0 +1,17 @@
+<!-- Adapted from First Steps with GitHub Copilot by James Montemagno (MIT License) -->
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="230" class="art" viewBox="0 0 640 230" role="img" aria-label="Terminal showing the slash context command and a context usage meter"><title>Terminal showing the slash context command and a context usage meter</title><style>svg{--bg:#080b12;--bg-elevated:#0d111a;--surface:#121824;--surface-2:#171e2c;--border:#283043;--border-soft:#1d2636;--text:#f1f5fb;--muted:#9ca8ba;--purple:#a371f7;--purple-bright:#bf8cff;--blue:#58a6ff;--green:#3fb950;--yellow:#d29922}@media(prefers-color-scheme:light){svg{--bg:#f7f8fb;--bg-elevated:#fff;--surface:#fff;--surface-2:#f1f3f8;--border:#d5dae5;--border-soft:#e7eaf0;--text:#161b26;--muted:#536071;--purple:#6f42c1;--purple-bright:#8250df;--blue:#0969da;--green:#1a7f37}}.art .plate{fill:var(--bg-elevated);stroke:var(--border)}.art .panel{fill:var(--surface)}.art .win{fill:var(--surface-2)}.art .card{fill:var(--bg-elevated);stroke:var(--border-soft);stroke-width:1}.art .track{fill:var(--surface-2)}.art .fill{fill:var(--purple)}.art .fill.alt{fill:var(--blue)}.art .fill.warn{fill:var(--yellow)}.art .sw{fill:var(--purple)}.art .sw.alt{fill:var(--blue)}.art .sw.warn{fill:var(--yellow)}.art .dot{fill:var(--border)}.art .dot.red{fill:#f85149}.art .dot.amber{fill:var(--yellow)}.art .dot.green{fill:var(--green)}.art .mono text,.art text.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}.art text{font-family:Inter,ui-sans-serif,system-ui,sans-serif}.art .t-xs{font-size:10px}.art .t-sm{font-size:12px}.art .txt{fill:var(--text)}.art .mut{fill:var(--muted)}.art .accent{fill:var(--purple-bright)}</style><rect class="plate" x="0.5" y="0.5" width="639" height="229" rx="12"/>
+<rect class="win" x="20" y="18" width="600" height="26" rx="7"/><circle class="dot red" cx="36" cy="31" r="4"/><circle class="dot amber" cx="50" cy="31" r="4"/><circle class="dot green" cx="64" cy="31" r="4"/><text class="t-xs mut" x="320" y="35" text-anchor="middle">copilot — /context</text>
+<rect class="panel" x="20" y="44" width="600" height="168"/>
+<text class="t-sm accent mono" x="44" y="76">&gt;</text><text class="t-sm txt mono" x="60" y="76">/context</text>
+<text class="t-sm mut" x="44" y="104">Context window</text>
+<text class="t-sm txt" x="576" y="104" text-anchor="end">61% used</text>
+<rect class="track" x="44" y="116" width="532" height="12" rx="6"/>
+<rect class="fill" x="44" y="116" width="196" height="12" rx="6"/>
+<rect class="fill alt" x="240" y="116" width="88" height="12" rx="6"/>
+<rect class="fill warn" x="328" y="116" width="40" height="12" rx="6"/>
+<circle class="sw" cx="50" cy="152" r="5"/><text class="t-xs mut" x="62" y="156">Conversation</text>
+<circle class="sw alt" cx="184" cy="152" r="5"/><text class="t-xs mut" x="196" y="156">Files read</text>
+<circle class="sw warn" cx="296" cy="152" r="5"/><text class="t-xs mut" x="308" y="156">Instructions</text>
+<rect class="card" x="44" y="168" width="532" height="30" rx="8"/>
+<text class="t-xs mut" x="60" y="187">Running low? Use /compact to summarize, or start a fresh session.</text>
+</svg>

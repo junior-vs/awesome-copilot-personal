@@ -1,0 +1,26 @@
+<!-- Adapted from First Steps with GitHub Copilot by James Montemagno (MIT License) -->
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="300" class="art" viewBox="0 0 640 300" role="img" aria-label="The Issues view in the Copilot app with a list of open issues"><title>The Issues view in the Copilot app with a list of open issues</title><style>svg{--bg:#080b12;--bg-elevated:#0d111a;--surface:#121824;--surface-2:#171e2c;--border:#283043;--border-soft:#1d2636;--text:#f1f5fb;--muted:#9ca8ba;--purple:#a371f7;--purple-bright:#bf8cff;--blue:#58a6ff;--green:#3fb950;--yellow:#d29922}@media(prefers-color-scheme:light){svg{--bg:#f7f8fb;--bg-elevated:#fff;--surface:#fff;--surface-2:#f1f3f8;--border:#d5dae5;--border-soft:#e7eaf0;--text:#161b26;--muted:#536071;--purple:#6f42c1;--blue:#0969da;--green:#1a7f37}}.art .plate{fill:var(--bg-elevated);stroke:var(--border)}.art .panel{fill:var(--surface)}.art .rail{fill:var(--surface-2)}.art .win{fill:var(--surface-2)}.art .card{fill:var(--bg-elevated);stroke:var(--border-soft);stroke-width:1}.art .card.sel{fill:color-mix(in srgb,var(--purple) 16%,var(--bg-elevated));stroke:var(--purple)}.art .chip{fill:var(--bg-elevated);stroke:var(--border)}.art .chip.sel{fill:color-mix(in srgb,var(--purple) 16%,var(--bg-elevated));stroke:var(--purple)}.art .input{fill:var(--surface-2);stroke:var(--border)}.art .cta{fill:var(--purple);stroke:none}.art .rule{stroke:var(--border);stroke-width:1}.art .ok-stroke{fill:none;stroke:var(--green);stroke-width:1.4}.art .ok-fill{fill:var(--green)}.art .stroke{fill:none;stroke:var(--muted);stroke-width:1.2}.art .dot{fill:var(--border)}.art .dot.red{fill:#f85149}.art .dot.amber{fill:var(--yellow)}.art .dot.green{fill:var(--green)}.art text{font-family:Inter,ui-sans-serif,system-ui,sans-serif}.art .t-xs{font-size:10px}.art .t-sm{font-size:12px}.art .txt{fill:var(--text)}.art .mut{fill:var(--muted)}.art .accent{fill:var(--purple-bright)}.art .ok{fill:var(--green)}.art .inv{fill:#fff}</style><rect class="plate" x="0.5" y="0.5" width="639" height="299" rx="12"/>
+<rect class="rail" x="0.5" y="0.5" width="212" height="299" rx="12"/>
+<circle class="dot" cx="28" cy="28" r="5"/><circle class="dot" cx="46" cy="28" r="5"/><circle class="dot" cx="64" cy="28" r="5"/>
+<rect class="card sel" x="14" y="100" width="184" height="26" rx="8"/>
+<text class="t-sm txt" x="58" y="118">Issues</text>
+<text class="t-sm txt" x="236" y="34">Issues</text>
+<rect class="chip" x="432" y="18" width="112" height="24" rx="7"/><text class="t-xs txt" x="488" y="34" text-anchor="middle">All repositories</text>
+<rect class="chip sel" x="236" y="52" width="86" height="24" rx="8"/><text class="t-xs accent" x="279" y="68" text-anchor="middle">Assigned to me</text>
+<text class="t-xs mut" x="336" y="68">Created by me</text>
+<text class="t-xs mut" x="420" y="68">Mentioning me</text>
+<text class="t-xs mut" x="508" y="68">Done</text>
+<rect class="input" x="236" y="86" width="120" height="22" rx="7"/>
+<text class="t-xs mut" x="262" y="101">Search...</text>
+<path class="rule" d="M224 120h416"/>
+<circle class="ok-stroke" cx="262" cy="138" r="6"/><circle class="ok-fill" cx="262" cy="138" r="2"/>
+<text class="t-sm txt" x="276" y="142">Add a per-question timer <tspan class="mut">#12</tspan></text>
+<text class="t-xs mut" x="276" y="160">jamesmontemagno/space-quiz · 5m ago</text>
+<circle class="ok-stroke" cx="262" cy="182" r="6"/><circle class="ok-fill" cx="262" cy="182" r="2"/>
+<text class="t-sm txt" x="276" y="186">Show a review screen after the last question <tspan class="mut">#13</tspan></text>
+<text class="t-xs mut" x="276" y="204">jamesmontemagno/space-quiz · 5m ago</text>
+<circle class="ok-stroke" cx="262" cy="226" r="6"/><circle class="ok-fill" cx="262" cy="226" r="2"/>
+<text class="t-sm txt" x="276" y="230">Save a local high score board <tspan class="mut">#14</tspan></text>
+<text class="t-xs mut" x="276" y="248">jamesmontemagno/space-quiz · 5m ago</text>
+<text class="t-xs accent" x="236" y="280">Open any issue and start a session on it without leaving the app.</text>
+</svg>
